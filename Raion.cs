@@ -1,33 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SuperMarket
 {
-    class Raion
+    class Raion // Tema #1
     {
-        private int NrRaion;
-        private string Type;
+        public int NrRaion {  get; set; } // Tema #2 Adaugarea Auto-Properties
+        public string Type { get; set; }
         public Raion(int Nr, string Name)
         {
             this.NrRaion = Nr;
             this.Type = Name;
         }
-        public int nrRaion
-        {
-            get { return NrRaion; }
-            set { NrRaion = value; }
-        }
-        public string type
-        {
-            get { return Type; }
-            set { Type = value; }
-        }
         public void DisplayRaionInfo()
         {
             Console.WriteLine($"Raion: {NrRaion}, Name: {Type}");
         }   
+        public int CautareRaion(string SrcType) // Tema #2 Cautare dupa tipul Raionului (legume, textile, jucarii...)
+        {
+            if (SrcType == Type)
+                return NrRaion;
+            else return 0;
+        }
+        public static Raion CitireFisierR(string line)
+        {
+            string[] data = line.Split(',');
+
+            if (data.Length == 2)
+            {
+                return new Raion(
+                    int.Parse(data[0].Trim()),       // ID
+                    data[1].Trim()                   // Nume
+                );
+            }
+            else
+            {
+                Console.WriteLine("Invalid data format for Raion.");
+                return null;
+            }
+        }
+
     }
 }

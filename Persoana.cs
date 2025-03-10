@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 
-namespace SuperMarket
+namespace SuperMarket // Tema #1
 {
     class Persoana
     {
-        private string Name;
-        private int Age;
-        private int ID;
+        public string Name { get; set; } // Tema #2 Adaugarea Auto-Properties
+        public int Age { get; set; }
+        public int ID { get; set; }
 
         public Persoana(string Name, int Age, int ID)
         {
@@ -19,24 +20,48 @@ namespace SuperMarket
             this.Age = Age;
             this.ID = ID;
         }
-        public string name
-        {
-            get { return Name; }
-            set { Name = value; }
-        }
-        public int age
-        {
-            get { return Age; }
-            set { Age = value; }
-        }
-        public int id
-        {
-            get { return ID; }
-            set { ID = value; }
-        }
+    
         public void DisplayInfo()
         {
             Console.WriteLine($"Name: {Name}, Age: {Age}, ID: {ID}");
+        }
+
+        public bool CautarePers(string SrcName) // Tema #2 Cautare dupa Nume
+        {
+            if (SrcName == Name)
+                return true;
+            else return false;
+        }
+        public static Persoana CitireFisier(string file) 
+        {
+            Persoana pers = null;
+
+            if (File.Exists(file))
+            {
+                using (StreamReader sr = new StreamReader(file))
+                {
+                    string line = sr.ReadLine();
+
+                    if (line != null)
+                    {
+                        string[] data = line.Split(',');
+
+                        if (data.Length == 3)
+                        {
+                            string name = data[0];
+                            int age = int.Parse(data[1]);
+                            int id = int.Parse(data[2]);
+
+                            pers = new Persoana(name, age, id);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Fisierul {file} nu a fost gasit!");
+            }
+            return pers;
         }
     }
 }

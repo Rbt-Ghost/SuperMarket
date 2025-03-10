@@ -1,0 +1,5 @@
+1,Fructe
+2,Carne
+3,Lactate
+4,Panificatie
+5,Bauturi
