@@ -11,6 +11,8 @@ namespace SuperMarket
     {
         public int NrRaion {  get; set; } // Tema #2 Adaugarea Auto-Properties
         public string Type { get; set; }
+
+        public Raion() { }
         public Raion(int Nr, string Name)
         {
             this.NrRaion = Nr;
@@ -42,6 +44,21 @@ namespace SuperMarket
                 Console.WriteLine("Invalid data format for Raion.");
                 return null;
             }
+        }
+
+        public void InsertRaion()
+        {
+            do
+            {
+                Console.Write("NrRaion: ");
+                NrRaion = int.Parse(Console.ReadLine());
+            } while (0 > NrRaion);
+
+            do
+            {
+                Console.Write("Tipul Raionului: ");
+                Type = Console.ReadLine();
+            } while (Type.Length < 3);
         }
 
     }

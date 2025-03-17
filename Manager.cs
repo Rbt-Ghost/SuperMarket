@@ -12,6 +12,8 @@ namespace SuperMarket
         public string Departament {  get; set; } // Tema #2 Adaugarea Auto-Properties
         public double Salary { get; set; }
 
+        public Manager() { }
+
         public Manager(string Name, int Age, int ID, string Departament, double Salary)
             : base(Name, Age, ID)
         {
@@ -46,6 +48,24 @@ namespace SuperMarket
                 Console.WriteLine("Invalid data format.");
                 return null;
             }
+        }
+        public Manager InsertManager() // Tema #3
+        {
+            InsertPers();
+
+            do
+            {
+                Console.Write("Departament: ");
+                Departament = Console.ReadLine();
+            } while (Departament.Length < 3);
+
+            do
+            {
+                Console.Write("Salariu: ");
+                Salary = int.Parse(Console.ReadLine());
+            } while (2000 > Salary);
+
+            return this;
         }
 
     }

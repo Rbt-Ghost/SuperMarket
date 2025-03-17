@@ -12,6 +12,8 @@ namespace SuperMarket
         public string Name { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
+
+        public Produs() { }
         public Produs(int NrRaion, string Type, string Name, double Price, int Quantity)
             : base(NrRaion, Type)
         {
@@ -49,6 +51,29 @@ namespace SuperMarket
                 Console.WriteLine("Invalid data format for Produs.");
                 return null;
             }
+        }
+
+        public void InsertProdus() // Tema #3
+        {
+            InsertRaion();
+
+            do
+            {
+                Console.Write("Numele produsului: ");
+                Name = Console.ReadLine();
+            } while (Name.Length < 3);
+
+            do
+            {
+                Console.Write("Pret/Bucata: ");
+                Price = int.Parse(Console.ReadLine());
+            } while (0 > Price);
+
+            do
+            {
+                Console.Write("Cantitate: ");
+                Quantity = int.Parse(Console.ReadLine());
+            } while (0 > Quantity);
         }
 
     }

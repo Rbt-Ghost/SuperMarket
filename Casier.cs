@@ -11,6 +11,8 @@ namespace SuperMarket // Tema #1
     {
         public int nrCasa {  get; set; } // Tema #2 Adaugarea Auto-Properties
         public double Salary { get; set; }
+
+        public Casier() { }
         public Casier(string Name, int Age, int ID, int nrCasa, double Salary)
             : base(Name, Age, ID)
         {
@@ -45,6 +47,23 @@ namespace SuperMarket // Tema #1
                 Console.WriteLine("Invalid data format for Casier.");
                 return null;
             }
+        }
+
+        public void InsertCasier() // Tema #3
+        {
+            InsertPers();
+
+            do
+            {
+                Console.Write("NrCasa: ");
+                nrCasa = int.Parse(Console.ReadLine());
+            } while (0 > nrCasa);
+
+            do
+            {
+                Console.Write("Salariu: ");
+                Salary = int.Parse(Console.ReadLine());
+            } while (2000 > Salary);
         }
 
     }

@@ -11,19 +11,21 @@ namespace SuperMarket
     {
         public string ListaCumparaturi {  get; set; } // Tema #2 Adaugarea Auto-Properties
         public double PretTotal { get; set; }
-        public int PunceiFidelitate { get; set; }
+        public int PuncteFidelitate { get; set; }
+
+        public Client() { }
 
         public Client(string Name, int Age, int ID, string ListaCumparaturi, double PretTotal, int PuncteFidelitate)
             : base(Name, Age, ID)
         {
             this.ListaCumparaturi = ListaCumparaturi;
             this.PretTotal = PretTotal;
-            this.PunceiFidelitate = PuncteFidelitate;
+            this.PuncteFidelitate = PuncteFidelitate;
         }
         public void DisplayClientInfo()
         {
             DisplayInfo();
-            Console.WriteLine($" Lista cumparaturi: {ListaCumparaturi}, De plata: {PretTotal}, Puncte fidelitate: {PunceiFidelitate}");
+            Console.WriteLine($" Lista cumparaturi: {ListaCumparaturi}, De plata: {PretTotal}, Puncte fidelitate: {PuncteFidelitate}");
         }
         public bool CautareClient(string SrcName) // Tema #2 Cautare dupa Nume
         {
@@ -49,6 +51,29 @@ namespace SuperMarket
                 Console.WriteLine("Invalid data format for Client.");
                 return null;
             }
+        }
+
+        public void InsertClient() // #Tema3
+        {
+            InsertPers();
+
+            do
+            {
+                Console.Write("Lista cumparaturi: ");
+                ListaCumparaturi = Console.ReadLine();
+            } while (ListaCumparaturi.Length < 3);
+
+            do
+            {
+                Console.Write("PretTotal: ");
+                PretTotal = int.Parse(Console.ReadLine());
+            } while (-0.1 > PretTotal);
+
+            do
+            {
+                Console.Write("PuncteFidelitate: ");
+                PuncteFidelitate = int.Parse(Console.ReadLine());
+            } while (-0.1 > PuncteFidelitate);
         }
 
     }

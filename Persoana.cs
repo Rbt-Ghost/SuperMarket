@@ -13,6 +13,7 @@ namespace SuperMarket // Tema #1
         public string Name { get; set; } // Tema #2 Adaugarea Auto-Properties
         public int Age { get; set; }
         public int ID { get; set; }
+        public Persoana() { }
 
         public Persoana(string Name, int Age, int ID)
         {
@@ -62,6 +63,27 @@ namespace SuperMarket // Tema #1
                 Console.WriteLine($"Fisierul {file} nu a fost gasit!");
             }
             return pers;
+        }
+
+        public void InsertPers() // Tema #3
+        {
+            do
+            {
+                Console.Write("Nume: ");
+                Name = Console.ReadLine();
+            } while (Name.Length < 3);
+
+            do
+            {
+                Console.Write("Varsta: ");
+                Age = int.Parse(Console.ReadLine());
+            } while (0 > Age || Age > 150);
+
+            do
+            {
+                Console.Write("ID: ");
+                ID = int.Parse(Console.ReadLine());
+            } while (Age < 99999 || Age > 999999);
         }
     }
 }
