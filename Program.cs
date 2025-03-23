@@ -10,29 +10,24 @@ namespace SuperMarket
 {
     class Program
     {
-        static Manager[] manager = new Manager[0];
-        static Casier[] casier = new Casier[0];
-        static Client[] client = new Client[0];
-        static Raion[] raion = new Raion[0];
-        static Produs[] produs = new Produs[0];
+        static List<Manager> manager = new List<Manager>();
+        static List<Casier> casier = new List<Casier>();
+        static List<Client> client = new List<Client>();
+        static List<Raion> raion = new List<Raion>();
+        static List<Produs> produs = new List<Produs>();
 
-        static int ManagerCount = 0;
-        static int CasierCount = 0;
-        static int ProdusCount = 0;
-        static int ClientCount = 0;
-        static int RaionCount = 0;
-
-        static string fManager = "C:/Users/Robert/MyCode/Univ/PIU/PIU_Project_SuperMarket/SuperMarket/Manager.txt";
-        static string fCasier = "C:/Users/Robert/MyCode/Univ/PIU/PIU_Project_SuperMarket/SuperMarket/Casier.txt";
-        static string fClient = "C:/Users/Robert/MyCode/Univ/PIU/PIU_Project_SuperMarket/SuperMarket/Client.txt";
-        static string fRaion = "C:/Users/Robert/MyCode/Univ/PIU/PIU_Project_SuperMarket/SuperMarket/Raion.txt";
-        static string fProdus = "C:/Users/Robert/MyCode/Univ/PIU/PIU_Project_SuperMarket/SuperMarket/Produs.txt";
+        static string fManager = "Manager.txt"; //Am mutat fisierul txt in bin/debug ( nu mai trebuie sa includ tot path-ul )
+        static string fCasier = "Casier.txt";
+        static string fClient = "Client.txt";
+        static string fRaion = "Raion.txt";
+        static string fProdus = "Produs.txt";
 
         static void Main(string[] args)
         {
             LoadData();
+
             int choice;
-            do // Tema #3 adaugare meniu, mai trebuie lucrat la inserts
+            do  // Tema #3 adaugare meniu
             {
                 Console.WriteLine("\n=== MENU ===");
                 Console.WriteLine("1. Read Files");
@@ -69,88 +64,90 @@ namespace SuperMarket
 
         static void LoadData()
         {
+            manager.Clear();
+            casier.Clear();
+            client.Clear();
+            raion.Clear();
+            produs.Clear();
+
             if (File.Exists(fManager))
             {
                 string[] managerData = File.ReadAllLines(fManager);
-                manager = new Manager[managerData.Length];
-                for (int i = 0; i < managerData.Length; i++)
+                foreach (string line in managerData)
                 {
-                    ManagerCount++;
-                    manager[i] = Manager.CitireFisierM(managerData[i]);
+                    var m = Manager.CitireFisierM(line);
+                    if (m != null) manager.Add(m);
                 }
             }
 
             if (File.Exists(fCasier))
             {
                 string[] casierData = File.ReadAllLines(fCasier);
-                casier = new Casier[casierData.Length];
-                for (int i = 0; i < casierData.Length; i++)
+                foreach (string line in casierData)
                 {
-                    CasierCount++;
-                    casier[i] = Casier.CitireFisierC(casierData[i]);
+                    var c = Casier.CitireFisierC(line);
+                    if (c != null) casier.Add(c);
                 }
             }
 
             if (File.Exists(fClient))
             {
                 string[] clientData = File.ReadAllLines(fClient);
-                client = new Client[clientData.Length];
-                for (int i = 0; i < clientData.Length; i++)
+                foreach (string line in clientData)
                 {
-                    ClientCount++;
-                    client[i] = Client.CitireFisierC(clientData[i]);
+                    var cl = Client.CitireFisierC(line);
+                    if (cl != null) client.Add(cl);
                 }
             }
 
             if (File.Exists(fRaion))
             {
                 string[] raionData = File.ReadAllLines(fRaion);
-                raion = new Raion[raionData.Length];
-                for (int i = 0; i < raionData.Length; i++)
+                foreach (string line in raionData)
                 {
-                    RaionCount++;
-                    raion[i] = Raion.CitireFisierR(raionData[i]);
+                    var r = Raion.CitireFisierR(line);
+                    if (r != null) raion.Add(r);
                 }
             }
 
             if (File.Exists(fProdus))
             {
                 string[] produsData = File.ReadAllLines(fProdus);
-                produs = new Produs[produsData.Length];
-                ProdusCount = produsData.Length;
-                for (int i = 0; i < ProdusCount; i++)
+                foreach (string line in produsData)
                 {
-                    produs[i] = Produs.CitireFisierP(produsData[i]);
+                    var p = Produs.CitireFisierP(line);
+                    if (p != null) produs.Add(p);
                 }
             }
+
             Console.WriteLine("Data loaded successfully.");
         }
 
         static void DisplayData()
         {
             Console.WriteLine("\n--- Manageri ---");
-            foreach (var m in manager) m?.DisplayManagerInfo();
+            manager.ForEach(m => m.DisplayManagerInfo());
 
             Console.WriteLine("\n--- Casieri ---");
-            foreach (var c in casier) c?.DisplayCasierInfo();
+            casier.ForEach(c => c.DisplayCasierInfo());
 
             Console.WriteLine("\n--- Clienti ---");
-            foreach (var cl in client) cl?.DisplayClientInfo();
+            client.ForEach(cl => cl.DisplayClientInfo());
 
             Console.WriteLine("\n--- Raioane ---");
-            foreach (var r in raion) r?.DisplayRaionInfo();
+            raion.ForEach(r => r.DisplayRaionInfo());
 
             Console.WriteLine("\n--- Produse ---");
-            foreach (var p in produs) p?.DisplayProdusInfo();
+            produs.ForEach(p => p.DisplayProdusInfo());
         }
 
         static void InsertData()
         {
             Console.WriteLine("\nInsert Data:");
             Console.WriteLine("1. Manager");
-            Console.WriteLine("2. Cashier");
+            Console.WriteLine("2. Casier");
             Console.WriteLine("3. Client");
-            Console.WriteLine("4. Department");
+            Console.WriteLine("4. Raion");
             Console.WriteLine("5. Product");
             Console.Write("Choice: ");
             int choice = int.Parse(Console.ReadLine());
@@ -160,43 +157,46 @@ namespace SuperMarket
                 case 1:
                     Manager newManager = new Manager();
                     newManager.InsertManager();
+                    manager.Add(newManager);
                     File.AppendAllText(fManager, newManager.ToString() + Environment.NewLine);
                     break;
                 case 2:
                     Casier newCasier = new Casier();
                     newCasier.InsertCasier();
+                    casier.Add(newCasier);
                     File.AppendAllText(fCasier, newCasier.ToString() + Environment.NewLine);
                     break;
                 case 3:
                     Client newClient = new Client();
                     newClient.InsertClient();
+                    client.Add(newClient);
                     File.AppendAllText(fClient, newClient.ToString() + Environment.NewLine);
                     break;
                 case 4:
                     Raion newRaion = new Raion();
                     newRaion.InsertRaion();
+                    raion.Add(newRaion);
                     File.AppendAllText(fRaion, newRaion.ToString() + Environment.NewLine);
                     break;
                 case 5:
                     Produs newProdus = new Produs();
-                    ProdusCount++;
                     newProdus.InsertProdus();
+                    produs.Add(newProdus);
                     File.AppendAllText(fProdus, newProdus.ToString() + Environment.NewLine);
                     break;
                 default:
                     Console.WriteLine("Invalid option!");
                     break;
             }
-            LoadData(); // Reload after insert
         }
 
         static void SearchData()
         {
             Console.WriteLine("\nSearch Data:");
             Console.WriteLine("1. Manager");
-            Console.WriteLine("2. Cashier");
+            Console.WriteLine("2. Casier");
             Console.WriteLine("3. Client");
-            Console.WriteLine("4. Department");
+            Console.WriteLine("4. Raion");
             Console.WriteLine("5. Product");
             Console.Write("Choice: ");
             int choice = int.Parse(Console.ReadLine());
@@ -207,24 +207,29 @@ namespace SuperMarket
             switch (choice)
             {
                 case 1:
-                    foreach (var m in manager)
-                        if (m != null && m.CautareManager(search)) m.DisplayManagerInfo();
+                    manager.ForEach(m => {
+                        if (m.CautareManager(search))
+                            m.DisplayManagerInfo();
+                    });
                     break;
                 case 2:
-                    foreach (var c in casier)
-                        if (c != null && c.CautareCasier(search)) c.DisplayCasierInfo();
+                    casier.ForEach(c => { if (c.CautareCasier(search)) c.DisplayCasierInfo(); });
                     break;
                 case 3:
-                    foreach (var cl in client)
-                        if (cl != null && cl.CautareClient(search)) cl.DisplayClientInfo();
+                    client.ForEach(cl => { if (cl.CautareClient(search)) cl.DisplayClientInfo(); });
                     break;
                 case 4:
-                    foreach (var r in raion)
-                        if (r != null && r.CautareRaion(search) != 0) r.DisplayRaionInfo();
+                    if (Enum.TryParse(search, out RaionType searchType))
+                    {
+                        raion.ForEach(r => { if (r.Type == searchType) r.DisplayRaionInfo(); });
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Raion Type.");
+                    }
                     break;
                 case 5:
-                    foreach (var p in produs)
-                        if (p != null && p.CautareProdus(search) != null) p.DisplayProdusInfo();
+                    produs.ForEach(p => { if (p.CautareProdus(search) != null) p.DisplayProdusInfo(); });
                     break;
                 default:
                     Console.WriteLine("Invalid option!");

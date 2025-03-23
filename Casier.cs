@@ -66,5 +66,10 @@ namespace SuperMarket // Tema #1
             } while (2000 > Salary);
         }
 
+        public override string ToString() // Tema #4
+        {
+            return $"{base.ToString()},{nrCasa},{Salary}";
+        }
+
     }
 }

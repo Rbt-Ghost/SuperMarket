@@ -75,6 +75,9 @@ namespace SuperMarket
                 PuncteFidelitate = int.Parse(Console.ReadLine());
             } while (-0.1 > PuncteFidelitate);
         }
-
+        public override string ToString() // Tema #4
+        {
+            return $"{base.ToString()},{ListaCumparaturi},{PretTotal},{PuncteFidelitate}";
+        }
     }
 }

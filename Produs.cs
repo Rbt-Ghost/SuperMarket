@@ -14,8 +14,8 @@ namespace SuperMarket
         public int Quantity { get; set; }
 
         public Produs() { }
-        public Produs(int NrRaion, string Type, string Name, double Price, int Quantity)
-            : base(NrRaion, Type)
+        public Produs(int NrRaion, RaionType type, string Name, double Price, int Quantity)
+            : base(NrRaion, type)
         {
             this.Name = Name;
             this.Price = Price;
@@ -24,26 +24,30 @@ namespace SuperMarket
         public void DisplayProdusInfo()
         {
             DisplayRaionInfo();
-            Console.WriteLine($" Name: {Name}, Price: {Price}, Quantity: {Quantity}");
+            Console.WriteLine($" Name: {Name}, Pret/Bucata: {Price}, Cantitate stoc: {Quantity}");
         }
         public string CautareProdus(string SrcName)
         {
             if (SrcName == Name)
-                return Type;
+                return Type.ToString();
             else return null;
         }
         public static Produs CitireFisierP(string line)
         {
             string[] data = line.Split(',');
 
-            if (data.Length == 5)
+            if (data.Length == 5 &&
+                int.TryParse(data[0].Trim(), out int nrRaion) &&
+                Enum.TryParse(data[1].Trim(), out RaionType type) &&
+                double.TryParse(data[3].Trim(), out double price) &&
+                int.TryParse(data[4].Trim(), out int quantity))
             {
                 return new Produs(
-                    int.Parse(data[0].Trim()),          // ID
-                    data[1].Trim(),                     // Categoria
-                    data[2].Trim(),                     // Nume
-                    double.Parse(data[3].Trim()),        // Pret
-                    int.Parse(data[4].Trim())            // Stoc
+                    nrRaion,           // ID
+                    type,              // Categoria
+                    data[2].Trim(),    // Nume
+                    price,             // Pret
+                    quantity           // Stoc
                 );
             }
             else
@@ -74,6 +78,10 @@ namespace SuperMarket
                 Console.Write("Cantitate: ");
                 Quantity = int.Parse(Console.ReadLine());
             } while (0 > Quantity);
+        }
+        public override string ToString() // Tema #4
+        {
+            return $"{base.ToString()},{Name},{Price},{Quantity}";
         }
 
     }

@@ -83,7 +83,12 @@ namespace SuperMarket // Tema #1
             {
                 Console.Write("ID: ");
                 ID = int.Parse(Console.ReadLine());
-            } while (Age < 99999 || Age > 999999);
+            } while (ID < 99999 || ID > 999999);
+        }
+
+        public override string ToString() // Tema #4
+        {
+            return $"{Name},{Age},{ID}";
         }
     }
 }

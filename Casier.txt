@@ -1,5 +1,0 @@
-Maria Pop,20,129058,1,2000
-Ioana Georgescu,22,129059,2,2100
-Andrei Ionescu,23,129060,3,2050
-Elena Dumitrescu,21,129061,4,2150
-Victor Barbu,25,129062,5,2200
