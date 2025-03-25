@@ -67,17 +67,52 @@ namespace SuperMarket
                 Name = Console.ReadLine();
             } while (Name.Length < 3);
 
+            // For Price
             do
             {
-                Console.Write("Pret/Bucata: ");
-                Price = int.Parse(Console.ReadLine());
-            } while (0 > Price);
+                try
+                {
+                    Console.Write("Pret/Bucata: ");
+                    Price = int.Parse(Console.ReadLine());
 
+                    if (Price <= 0)
+                    {
+                        Console.WriteLine("Pretul trebuie sa fie un numar pozitiv.");
+                    }
+                    else
+                    {
+                        break; // Exit the loop if the price is valid
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Input invalid. Introduceti un numar valid pentru pret.");
+                }
+            } while (true);
+
+            // For Quantity
             do
             {
-                Console.Write("Cantitate: ");
-                Quantity = int.Parse(Console.ReadLine());
-            } while (0 > Quantity);
+                try
+                {
+                    Console.Write("Cantitate: ");
+                    Quantity = int.Parse(Console.ReadLine());
+
+                    if (Quantity <= 0)
+                    {
+                        Console.WriteLine("Cantitatea trebuie sa fie un numar pozitiv.");
+                    }
+                    else
+                    {
+                        break; // Exit the loop if the quantity is valid
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Input invalid. Introduceti un numar valid pentru cantitate.");
+                }
+            } while (true);
+
         }
         public override string ToString() // Tema #4
         {

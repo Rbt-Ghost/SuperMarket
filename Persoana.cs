@@ -75,15 +75,49 @@ namespace SuperMarket // Tema #1
 
             do
             {
-                Console.Write("Varsta: ");
-                Age = int.Parse(Console.ReadLine());
-            } while (0 > Age || Age > 150);
+                try
+                {
+                    Console.Write("Varsta: ");
+                    Age = int.Parse(Console.ReadLine());
+
+                    if (Age < 16 || Age > 120)
+                    {
+                        Console.WriteLine("Varsta invalida. Introduceti o varsta intre 0 si 150.");
+                    }
+                    else
+                    {
+                        break; // Exit the loop if the age is valid
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Input invalid. Introduceti un numar valid.");
+                }
+            } while (true);
+
 
             do
             {
-                Console.Write("ID: ");
-                ID = int.Parse(Console.ReadLine());
-            } while (ID < 99999 || ID > 999999);
+                try
+                {
+                    Console.Write("ID: ");
+                    ID = int.Parse(Console.ReadLine());
+
+                    if (ID < 100000 || ID > 999999)
+                    {
+                        Console.WriteLine("ID invalid. Introduceti un ID format din 6 cifre.");
+                    }
+                    else
+                    {
+                        break; // Exit the loop if the ID is valid
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Input invalid. Introduceti un numar valid.");
+                }
+            } while (true);
+
         }
 
         public override string ToString() // Tema #4

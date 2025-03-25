@@ -49,11 +49,11 @@ namespace SuperMarket
             if (data.Length == 5)
             {
                 return new Manager(
-                    data[0].Trim(),                     // Name
-                    int.Parse(data[1].Trim()),           // Age
-                    int.Parse(data[2].Trim()),           // ID
-                    (DepartamentType)Enum.Parse(typeof(DepartamentType), data[3].Trim()),                     // Departament
-                    double.Parse(data[4].Trim())         // Salary
+                    data[0].Trim(),                                                         // Name
+                    int.Parse(data[1].Trim()),                                              // Age
+                    int.Parse(data[2].Trim()),                                              // ID
+                    (DepartamentType)Enum.Parse(typeof(DepartamentType), data[3].Trim()),   // Departament
+                    double.Parse(data[4].Trim())                                            // Salary
                 );
             }
             else
@@ -89,9 +89,26 @@ namespace SuperMarket
 
             do
             {
-                Console.Write("Salariu: ");
-                Salary = int.Parse(Console.ReadLine());
-            } while (2000 > Salary);
+                try
+                {
+                    Console.Write("Salariu: ");
+                    Salary = int.Parse(Console.ReadLine());
+
+                    if (Salary < 2000)
+                    {
+                        Console.WriteLine("Salariu invalid. Introduceti un salariu de cel putin 2000.");
+                    }
+                    else
+                    {
+                        break; // Exit the loop if the salary is valid
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Input invalid. Introduceti un numar valid.");
+                }
+            } while (true);
+
 
             return this;
         }

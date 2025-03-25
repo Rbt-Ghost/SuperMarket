@@ -55,12 +55,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Casier.txt" />
-    <Content Include="Client.txt" />
-    <Content Include="Manager.txt" />
-    <Content Include="Produs.txt" />
-    <Content Include="Raion.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
