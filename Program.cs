@@ -1,31 +1,36 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+//using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
 namespace SuperMarket
 {
     class Program
     {
-        static List<Manager> manager = new List<Manager>();
-        static List<Casier> casier = new List<Casier>();
-        static List<Client> client = new List<Client>();
-        static List<Raion> raion = new List<Raion>();
-        static List<Produs> produs = new List<Produs>();
+        public static List<Manager> manager = new List<Manager>();
+        public static List<Casier> casier = new List<Casier>();
+        public static List<Client> client = new List<Client>();
+        public static List<Raion> raion = new List<Raion>();
+        public static List<Produs> produs = new List<Produs>();
 
-        static string fManager = "Manager.txt"; //Am mutat fisierul txt in bin/debug ( nu mai trebuie sa includ tot path-ul )
-        static string fCasier = "Casier.txt";
-        static string fClient = "Client.txt";
-        static string fRaion = "Raion.txt";
-        static string fProdus = "Produs.txt";
+        public static string fManager = "Manager.txt"; //Am mutat fisierul txt in bin/debug ( nu mai trebuie sa includ tot path-ul )
+        public static string fCasier = "Casier.txt";
+        public static string fClient = "Client.txt";
+        public static string fRaion = "Raion.txt";
+        public static string fProdus = "Produs.txt";
 
         static void Main(string[] args)
         {
-            LoadData();
+            //LoadData();
+            Application.EnableVisualStyles();                     // Tema #6
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
 
+            /*
             int choice;
             do  // Tema #3 adaugare meniu
             {
@@ -60,9 +65,10 @@ namespace SuperMarket
                         break;
                 }
             } while (choice != 0);
+            */
         }
 
-        static void LoadData()
+        public static void LoadData()
         {
             manager.Clear();
             casier.Clear();
@@ -123,7 +129,7 @@ namespace SuperMarket
             Console.WriteLine("Data loaded successfully.");
         }
 
-        static void DisplayData()
+        public static void DisplayData()
         {
             Console.WriteLine("\n--- Manageri ---");
             manager.ForEach(m => m.DisplayManagerInfo());
@@ -141,7 +147,7 @@ namespace SuperMarket
             produs.ForEach(p => p.DisplayProdusInfo());
         }
 
-        static void InsertData()
+        public static void InsertData()
         {
             Console.WriteLine("\nInsert Data:");
             Console.WriteLine("1. Manager");
@@ -190,7 +196,7 @@ namespace SuperMarket
             }
         }
 
-        static void SearchData()
+        public static void SearchData()
         {
             Console.WriteLine("\nSearch Data:");
             Console.WriteLine("1. Manager");
