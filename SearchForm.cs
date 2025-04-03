@@ -30,19 +30,43 @@ namespace SuperMarket
             switch (selection)
             {
                 case "Manager":
-                    Program.manager.ForEach(m => { if (m.CautareManager(searchTerm)) lstResults.Items.Add(m.ToString()); });
+                    Program.manager.ForEach(m =>
+                    {
+                        if (m.CautareManager(searchTerm))
+                            lstResults.Items.Add(m.DisplayManagerInfo());
+                    });
                     break;
+
                 case "Casier":
-                    Program.casier.ForEach(c => { if (c.CautareCasier(searchTerm)) lstResults.Items.Add(c.ToString()); });
+                    Program.casier.ForEach(c =>
+                    {
+                        if (c.CautareCasier(searchTerm))
+                            lstResults.Items.Add(c.DisplayCasierInfo());
+                    });
                     break;
+
                 case "Client":
-                    Program.client.ForEach(cl => { if (cl.CautareClient(searchTerm)) lstResults.Items.Add(cl.ToString()); });
+                    Program.client.ForEach(cl =>
+                    {
+                        if (cl.CautareClient(searchTerm))
+                            lstResults.Items.Add(cl.DisplayClientInfo());
+                    });
                     break;
+
                 case "Raion":
-                    Program.raion.ForEach(r => { if (r.ToString().Contains(searchTerm)) lstResults.Items.Add(r.ToString()); });
+                    Program.raion.ForEach(r =>
+                    {
+                        if (r.CautareRaion(searchTerm))
+                            lstResults.Items.Add(r.DisplayRaionInfo());
+                    });
                     break;
+
                 case "Produs":
-                    Program.produs.ForEach(p => { if (p.ToString().Contains(searchTerm)) lstResults.Items.Add(p.ToString()); });
+                    Program.produs.ForEach(p =>
+                    {
+                        if (p.CautareProdus(searchTerm))
+                            lstResults.Items.Add(p.DisplayProdusInfo());
+                    });
                     break;
             }
         }

@@ -33,11 +33,16 @@ namespace SuperMarket
             this.Departament = Departament;
             this.Salary = Salary;
         }
-        public void DisplayManagerInfo()
+        //public void DisplayManagerInfo()
+        //{
+        //  DisplayInfo();
+        //Console.WriteLine($" Departament: {Departament}, Salary: {Salary}");
+        //}
+        public string DisplayManagerInfo()
         {
-            DisplayInfo();
-            Console.WriteLine($" Departament: {Departament}, Salary: {Salary}");
+            return DisplayInfo() + $" Departament: {Departament}, Salariu: {Salary}";
         }
+
         public bool CautareManager( string SrcName) // Tema #2 Cautare dupa Nume
         {
             return (CautarePers(SrcName));

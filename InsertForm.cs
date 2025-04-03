@@ -176,10 +176,11 @@ namespace SuperMarket
             }
             else if (selectedType == "Raion")
             {
-                Raion newRaion = new Raion(
-                    int.Parse(GetTextBoxValue("txtID")),
-                    (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion"))
-                );
+                RaionType selectedRaionType = (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion"));
+                int nrRaion = (int)selectedRaionType; // Auto-generate number based on enum
+
+                Raion newRaion = new Raion(nrRaion, selectedRaionType);
+
                 Program.raion.Add(newRaion);
                 File.AppendAllText(Program.fRaion, newRaion.ToString() + Environment.NewLine);
             }

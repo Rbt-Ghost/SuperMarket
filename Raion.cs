@@ -30,17 +30,19 @@ namespace SuperMarket
             this.Type = type;
         }
 
-        public void DisplayRaionInfo()
+        //public void DisplayRaionInfo()
+        //{
+        //  Console.WriteLine($"Raion: {(int)Type}, Tip: {Type}");
+        //}
+        public string DisplayRaionInfo()
         {
-            Console.WriteLine($"Raion: {(int)Type}, Tip: {Type}");
+            return $"Raion Nr: {(int)Type}, Tip: {Type}";
         }
 
-        public int CautareRaion(string srcType) // Tema #2 Cautare dupa tipul Raionului (legume, textile, jucarii...)
+
+        public bool CautareRaion(string srcType)
         {
-            if (Enum.TryParse(srcType, true, out RaionType type) && type == Type)
-                return (int)Type;
-            else
-                return 0;
+            return Type.ToString().ToLower().Contains(srcType.ToLower());
         }
 
         public static Raion CitireFisierR(string line)

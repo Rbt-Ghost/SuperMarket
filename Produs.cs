@@ -21,16 +21,19 @@ namespace SuperMarket
             this.Price = Price;
             this.Quantity = Quantity;
         }
-        public void DisplayProdusInfo()
+        //public void DisplayProdusInfo()
+        //{
+        //  DisplayRaionInfo();
+        //Console.WriteLine($" Name: {Name}, Pret/Bucata: {Price}, Cantitate stoc: {Quantity}");
+        //}
+        public string DisplayProdusInfo()
         {
-            DisplayRaionInfo();
-            Console.WriteLine($" Name: {Name}, Pret/Bucata: {Price}, Cantitate stoc: {Quantity}");
+            return $"Raion Nr: { (int)Type}, Tip: { Type}, NumeProd: {Name}, Pret: {Price}, Cantitate: {Quantity}";
         }
-        public string CautareProdus(string SrcName)
+
+        public bool CautareProdus(string searchTerm)
         {
-            if (SrcName == Name)
-                return Type.ToString();
-            else return null;
+            return Name.ToLower().Contains(searchTerm.ToLower());
         }
         public static Produs CitireFisierP(string line)
         {

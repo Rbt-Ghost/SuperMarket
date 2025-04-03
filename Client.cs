@@ -22,11 +22,17 @@ namespace SuperMarket
             this.PretTotal = PretTotal;
             this.PuncteFidelitate = PuncteFidelitate;
         }
-        public void DisplayClientInfo()
+        //public void DisplayClientInfo()
+        //{
+        //  DisplayInfo();
+        //Console.WriteLine($" Lista cumparaturi: {ListaCumparaturi}, De plata: {PretTotal}, Puncte fidelitate: {PuncteFidelitate}");
+        //}
+        public string DisplayClientInfo()
         {
-            DisplayInfo();
-            Console.WriteLine($" Lista cumparaturi: {ListaCumparaturi}, De plata: {PretTotal}, Puncte fidelitate: {PuncteFidelitate}");
+            return DisplayInfo() +
+                   $", Lista cumparaturi: {ListaCumparaturi}, De plata: {PretTotal}, Puncte fidelitate: {PuncteFidelitate}";
         }
+
         public bool CautareClient(string SrcName) // Tema #2 Cautare dupa Nume
         {
             return CautarePers(SrcName);

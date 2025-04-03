@@ -20,24 +20,25 @@ namespace SuperMarket
 
             // Display Manager data
             lstDisplayData.Items.Add("--- Manageri ---");
-            Program.manager.ForEach(m => lstDisplayData.Items.Add(m.ToString()));
+            Program.manager.ForEach(m => lstDisplayData.Items.Add(m.DisplayManagerInfo()));
 
             // Display Casier data
             lstDisplayData.Items.Add("\n\n--- Casieri ---");
-            Program.casier.ForEach(c => lstDisplayData.Items.Add(c.ToString()));
+            Program.casier.ForEach(c => lstDisplayData.Items.Add(c.DisplayCasierInfo()));
 
             // Display Client data
             lstDisplayData.Items.Add("\n\n--- Clienti ---");
-            Program.client.ForEach(cl => lstDisplayData.Items.Add(cl.ToString()));
+            Program.client.ForEach(cl => lstDisplayData.Items.Add(cl.DisplayClientInfo()));
 
             // Display Raion data
             lstDisplayData.Items.Add("\n\n--- Raioane ---");
-            Program.raion.ForEach(r => lstDisplayData.Items.Add(r.ToString()));
+            Program.raion.ForEach(r => lstDisplayData.Items.Add(r.DisplayRaionInfo()));
 
             // Display Produs data
             lstDisplayData.Items.Add("\n\n--- Produse ---");
-            Program.produs.ForEach(p => lstDisplayData.Items.Add(p.ToString()));
+            Program.produs.ForEach(p => lstDisplayData.Items.Add(p.DisplayProdusInfo()));
         }
+
 
         // UI components initialization
         private void InitializeComponent()

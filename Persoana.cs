@@ -21,11 +21,16 @@ namespace SuperMarket // Tema #1
             this.Age = Age;
             this.ID = ID;
         }
-    
-        public void DisplayInfo()
+
+        //public void DisplayInfo()
+        //{
+        //  Console.WriteLine($"Name: {Name}, Age: {Age}, ID: {ID}");
+        //}
+        public string DisplayInfo()
         {
-            Console.WriteLine($"Name: {Name}, Age: {Age}, ID: {ID}");
+            return $"Name: {Name}, Varsta: {Age}, ID: {ID}";
         }
+
 
         public bool CautarePers(string SrcName) // Tema #2 Cautare dupa Nume
         {

@@ -19,11 +19,16 @@ namespace SuperMarket // Tema #1
             this.nrCasa = nrCasa;
             this.Salary = Salary;
         }
-        public void DisplayCasierInfo()
+        //public void DisplayCasierInfo()
+        //{
+        //  DisplayInfo();
+        //Console.WriteLine($" Casa: {nrCasa}, Salary: {Salary}");
+        //}
+        public string DisplayCasierInfo()
         {
-            DisplayInfo();
-            Console.WriteLine($" Casa: {nrCasa}, Salary: {Salary}");
+            return DisplayInfo() + $", Casa: {nrCasa}, Salariu: {Salary}";
         }
+
         public bool CautareCasier (string SrcName) // Tema #2 Cautare dupa Nume
         {
             return CautarePers(SrcName);
