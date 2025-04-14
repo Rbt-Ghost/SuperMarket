@@ -26,7 +26,7 @@ namespace SuperMarket
             this.btnInsert = new Button();
 
             // ComboBox for selection
-            this.cmbInsertType.Items.AddRange(new object[] { "Manager", "Casier", "Client", "Raion", "Produs" });
+            this.cmbInsertType.Items.AddRange(new object[] { "Manager", "Casier", "Raion", "Produs" });
             this.cmbInsertType.SelectedIndexChanged += new EventHandler(cmbInsertType_SelectedIndexChanged);
             this.cmbInsertType.Location = new System.Drawing.Point(30, 20);
             this.cmbInsertType.Size = new System.Drawing.Size(200, 30);
@@ -69,16 +69,6 @@ namespace SuperMarket
                 CreateLabel("ID"), CreateTextBox("txtID"),
                 CreateLabel("NrCasa"), CreateTextBox("txtNrCasa"),
                 CreateLabel("Salary"), CreateTextBox("txtSalary")
-            };
-
-            inputFields["Client"] = new List<Control>
-            {
-                CreateLabel("Name"), CreateTextBox("txtName"),
-                CreateLabel("Age"), CreateTextBox("txtAge"),
-                CreateLabel("ID"), CreateTextBox("txtID"),
-                CreateLabel("ListaCumparaturi"), CreateTextBox("txtListaCumparaturi"),
-                CreateLabel("PretTotal"), CreateTextBox("txtPretTotal"),
-                CreateLabel("PuncteFidelitate"), CreateTextBox("txtPuncteFidelitate")
             };
 
             inputFields["Raion"] = new List<Control>
@@ -160,19 +150,6 @@ namespace SuperMarket
                 );
                 Program.casier.Add(newCasier);
                 File.AppendAllText(Program.fCasier, newCasier.ToString() + Environment.NewLine);
-            }
-            else if (selectedType == "Client")
-            {
-                Client newClient = new Client(
-                    GetTextBoxValue("txtName"),
-                    int.Parse(GetTextBoxValue("txtAge")),
-                    int.Parse(GetTextBoxValue("txtID")),
-                    GetTextBoxValue("txtListaCumparaturi"),
-                    double.Parse(GetTextBoxValue("txtPretTotal")),
-                    int.Parse(GetTextBoxValue("txtPuncteFidelitate"))
-                );
-                Program.client.Add(newClient);
-                File.AppendAllText(Program.fClient, newClient.ToString() + Environment.NewLine);
             }
             else if (selectedType == "Raion")
             {

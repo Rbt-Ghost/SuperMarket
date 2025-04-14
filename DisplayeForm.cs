@@ -26,10 +26,6 @@ namespace SuperMarket
             lstDisplayData.Items.Add("\n\n--- Casieri ---");
             Program.casier.ForEach(c => lstDisplayData.Items.Add(c.DisplayCasierInfo()));
 
-            // Display Client data
-            lstDisplayData.Items.Add("\n\n--- Clienti ---");
-            Program.client.ForEach(cl => lstDisplayData.Items.Add(cl.DisplayClientInfo()));
-
             // Display Raion data
             lstDisplayData.Items.Add("\n\n--- Raioane ---");
             Program.raion.ForEach(r => lstDisplayData.Items.Add(r.DisplayRaionInfo()));

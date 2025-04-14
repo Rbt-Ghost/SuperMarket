@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Casier.cs" />
-    <Compile Include="Client.cs" />
     <Compile Include="DisplayeForm.cs">
       <SubType>Form</SubType>
     </Compile>

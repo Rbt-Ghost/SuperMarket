@@ -45,14 +45,6 @@ namespace SuperMarket
                     });
                     break;
 
-                case "Client":
-                    Program.client.ForEach(cl =>
-                    {
-                        if (cl.CautareClient(searchTerm))
-                            lstResults.Items.Add(cl.DisplayClientInfo());
-                    });
-                    break;
-
                 case "Raion":
                     Program.raion.ForEach(r =>
                     {
@@ -79,7 +71,7 @@ namespace SuperMarket
             this.lstResults = new ListBox();
 
             // cmbSearchType
-            this.cmbSearchType.Items.AddRange(new object[] { "Manager", "Casier", "Client", "Raion", "Produs" });
+            this.cmbSearchType.Items.AddRange(new object[] { "Manager", "Casier", "Raion", "Produs" });
             this.cmbSearchType.Location = new System.Drawing.Point(30, 30);
             this.cmbSearchType.Size = new System.Drawing.Size(200, 30);
 

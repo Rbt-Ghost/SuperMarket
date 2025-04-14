@@ -13,13 +13,11 @@ namespace SuperMarket
     {
         public static List<Manager> manager = new List<Manager>();
         public static List<Casier> casier = new List<Casier>();
-        public static List<Client> client = new List<Client>();
         public static List<Raion> raion = new List<Raion>();
         public static List<Produs> produs = new List<Produs>();
 
         public static string fManager = "Manager.txt"; //Am mutat fisierul txt in bin/debug ( nu mai trebuie sa includ tot path-ul )
         public static string fCasier = "Casier.txt";
-        public static string fClient = "Client.txt";
         public static string fRaion = "Raion.txt";
         public static string fProdus = "Produs.txt";
 
@@ -72,7 +70,6 @@ namespace SuperMarket
         {
             manager.Clear();
             casier.Clear();
-            client.Clear();
             raion.Clear();
             produs.Clear();
 
@@ -93,16 +90,6 @@ namespace SuperMarket
                 {
                     var c = Casier.CitireFisierC(line);
                     if (c != null) casier.Add(c);
-                }
-            }
-
-            if (File.Exists(fClient))
-            {
-                string[] clientData = File.ReadAllLines(fClient);
-                foreach (string line in clientData)
-                {
-                    var cl = Client.CitireFisierC(line);
-                    if (cl != null) client.Add(cl);
                 }
             }
 
@@ -137,9 +124,6 @@ namespace SuperMarket
             Console.WriteLine("\n--- Casieri ---");
             casier.ForEach(c => c.DisplayCasierInfo());
 
-            Console.WriteLine("\n--- Clienti ---");
-            client.ForEach(cl => cl.DisplayClientInfo());
-
             Console.WriteLine("\n--- Raioane ---");
             raion.ForEach(r => r.DisplayRaionInfo());
 
@@ -152,9 +136,8 @@ namespace SuperMarket
             Console.WriteLine("\nInsert Data:");
             Console.WriteLine("1. Manager");
             Console.WriteLine("2. Casier");
-            Console.WriteLine("3. Client");
-            Console.WriteLine("4. Raion");
-            Console.WriteLine("5. Product");
+            Console.WriteLine("3. Raion");
+            Console.WriteLine("4. Product");
             Console.Write("Choice: ");
             int choice = int.Parse(Console.ReadLine());
 
@@ -171,12 +154,6 @@ namespace SuperMarket
                     newCasier.InsertCasier();
                     casier.Add(newCasier);
                     File.AppendAllText(fCasier, newCasier.ToString() + Environment.NewLine);
-                    break;
-                case 3:
-                    Client newClient = new Client();
-                    newClient.InsertClient();
-                    client.Add(newClient);
-                    File.AppendAllText(fClient, newClient.ToString() + Environment.NewLine);
                     break;
                 case 4:
                     Raion newRaion = new Raion();
@@ -201,9 +178,8 @@ namespace SuperMarket
             Console.WriteLine("\nSearch Data:");
             Console.WriteLine("1. Manager");
             Console.WriteLine("2. Casier");
-            Console.WriteLine("3. Client");
-            Console.WriteLine("4. Raion");
-            Console.WriteLine("5. Product");
+            Console.WriteLine("3. Raion");
+            Console.WriteLine("4. Product");
             Console.Write("Choice: ");
             int choice = int.Parse(Console.ReadLine());
 
@@ -222,9 +198,6 @@ namespace SuperMarket
                     casier.ForEach(c => { if (c.CautareCasier(search)) c.DisplayCasierInfo(); });
                     break;
                 case 3:
-                    client.ForEach(cl => { if (cl.CautareClient(search)) cl.DisplayClientInfo(); });
-                    break;
-                case 4:
                     if (Enum.TryParse(search, out RaionType searchType))
                     {
                         raion.ForEach(r => { if (r.Type == searchType) r.DisplayRaionInfo(); });
@@ -234,8 +207,8 @@ namespace SuperMarket
                         Console.WriteLine("Invalid Raion Type.");
                     }
                     break;
-                case 5:
-                    produs.ForEach(p => { if (p.CautareProdus(search) != null) p.DisplayProdusInfo(); });
+                case 4:
+                    produs.ForEach(p => { if (p.CautareProdus(search) == true) p.DisplayProdusInfo(); });
                     break;
                 default:
                     Console.WriteLine("Invalid option!");
