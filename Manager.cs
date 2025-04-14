@@ -1,124 +1,140 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SuperMarket 
+namespace SuperMarket
 {
-    public enum DepartamentType // Tema #4
+    public enum DepartamentType
     {
         HR = 1,
-        Marketing = 2,
-        IT = 3,
-        Fructe = 4,
-        Carne = 5,
-        Lactate = 6,
-        Panificatie = 7,
-        Bauturi = 8,
-        Textile = 9,
-        Jucarii = 10
+        Marketing,
+        IT,
+        Fructe,
+        Carne,
+        Lactate,
+        Panificatie,
+        Bauturi,
+        Textile,
+        Jucarii
     }
-    class Manager : Persoana // Tema #1
+
+    class Manager : Persoana
     {
-        public DepartamentType Departament {  get; set; } // Tema #2 Adaugarea Auto-Properties
-        public double Salary { get; set; }
+        private DepartamentType departament;
+        private double salary;
+
+        public DepartamentType Departament
+        {
+            get => departament;
+            set
+            {
+                if (!Enum.IsDefined(typeof(DepartamentType), value))
+                    throw new ArgumentException("Departament invalid.");
+                departament = value;
+            }
+        }
+
+        public double Salary
+        {
+            get => salary;
+            set
+            {
+                if (value < 2000)
+                    throw new ArgumentOutOfRangeException("Salariul trebuie sa fie cel putin 2000.");
+                salary = value;
+            }
+        }
 
         public Manager() { }
 
-        public Manager(string Name, int Age, int ID, DepartamentType Departament, double Salary)
-            : base(Name, Age, ID)
+        public Manager(string name, int age, int id, DepartamentType departament, double salary)
+            : base(name, age, id)
         {
-            this.Departament = Departament;
-            this.Salary = Salary;
+            Departament = departament;
+            Salary = salary;
         }
-        //public void DisplayManagerInfo()
-        //{
-        //  DisplayInfo();
-        //Console.WriteLine($" Departament: {Departament}, Salary: {Salary}");
-        //}
+
         public string DisplayManagerInfo()
         {
             return DisplayInfo() + $" Departament: {Departament}, Salariu: {Salary}";
         }
 
-        public bool CautareManager( string SrcName) // Tema #2 Cautare dupa Nume
+        public bool CautareManager(string SrcName)
         {
-            return (CautarePers(SrcName));
+            return CautarePers(SrcName);
         }
+
         public static Manager CitireFisierM(string line)
         {
             string[] data = line.Split(',');
 
             if (data.Length == 5)
             {
-                return new Manager(
-                    data[0].Trim(),                                                         // Name
-                    int.Parse(data[1].Trim()),                                              // Age
-                    int.Parse(data[2].Trim()),                                              // ID
-                    (DepartamentType)Enum.Parse(typeof(DepartamentType), data[3].Trim()),   // Departament
-                    double.Parse(data[4].Trim())                                            // Salary
-                );
+                try
+                {
+                    return new Manager(
+                        data[0].Trim(),
+                        int.Parse(data[1].Trim()),
+                        int.Parse(data[2].Trim()),
+                        (DepartamentType)Enum.Parse(typeof(DepartamentType), data[3].Trim()),
+                        double.Parse(data[4].Trim())
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Eroare la parsare: " + ex.Message);
+                    return null;
+                }
             }
             else
             {
-                Console.WriteLine("Invalid data format.");
+                Console.WriteLine("Format invalid al datelor.");
                 return null;
             }
         }
-        public Manager InsertManager() // Tema #3
+
+        public Manager InsertManager()
         {
             InsertPers();
 
-            Console.WriteLine("Departament ");
-            foreach (var type in Enum.GetValues(typeof(DepartamentType)))
+            while (true)
             {
-                Console.WriteLine($"{(int)type}. {type}");
-            }
-
-            do
-            {
-                Console.Write("Choice: ");
-                int departamentInput = int.Parse(Console.ReadLine());
-                if (Enum.IsDefined(typeof(DepartamentType), departamentInput))
+                try
                 {
-                    Departament = (DepartamentType)departamentInput; // Convert to enum
+                    Console.WriteLine("Departament: ");
+                    foreach (var type in Enum.GetValues(typeof(DepartamentType)))
+                    {
+                        Console.WriteLine($"{(int)type}. {type}");
+                    }
+
+                    Console.Write("Alege departamentul (numar): ");
+                    int input = int.Parse(Console.ReadLine());
+
+                    Departament = (DepartamentType)input;
                     break;
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Invalid department number. Please try again.");
+                    Console.WriteLine("Eroare: " + ex.Message);
                 }
-            } while (true);
+            }
 
-            do
+            while (true)
             {
                 try
                 {
                     Console.Write("Salariu: ");
-                    Salary = int.Parse(Console.ReadLine());
-
-                    if (Salary < 2000)
-                    {
-                        Console.WriteLine("Salariu invalid. Introduceti un salariu de cel putin 2000.");
-                    }
-                    else
-                    {
-                        break; // Exit the loop if the salary is valid
-                    }
+                    Salary = double.Parse(Console.ReadLine());
+                    break;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Input invalid. Introduceti un numar valid.");
+                    Console.WriteLine("Eroare: " + ex.Message);
                 }
-            } while (true);
-
+            }
 
             return this;
         }
 
-        public override string ToString() // Tema #4
+        public override string ToString()
         {
             return $"{base.ToString()},{Departament},{Salary}";
         }

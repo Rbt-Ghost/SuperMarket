@@ -1,66 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuperMarket
 {
-    class Produs : Raion // Tema 1
+    class Produs : Raion // Tema #1
     {
         public string Name { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
 
         public Produs() { }
-        public Produs(int NrRaion, RaionType type, string Name, double Price, int Quantity)
-            : base(NrRaion, type)
+
+        public Produs(RaionType type, string name, double price, int quantity)
+            : base(type)
         {
-            this.Name = Name;
-            this.Price = Price;
-            this.Quantity = Quantity;
+            Name = name;
+            Price = price;
+            Quantity = quantity;
         }
-        //public void DisplayProdusInfo()
-        //{
-        //  DisplayRaionInfo();
-        //Console.WriteLine($" Name: {Name}, Pret/Bucata: {Price}, Cantitate stoc: {Quantity}");
-        //}
+
         public string DisplayProdusInfo()
         {
-            return $"Raion Nr: { (int)Type}, Tip: { Type}, NumeProd: {Name}, Pret: {Price}, Cantitate: {Quantity}";
+            return $"Raion Nr: {(int)Type}, Tip: {Type}, Nume Produs: {Name}, Pret: {Price}, Cantitate: {Quantity}";
         }
 
         public bool CautareProdus(string searchTerm)
         {
-            return Name.ToLower().Contains(searchTerm.ToLower());
+            return Name?.ToLower().Contains(searchTerm.ToLower()) ?? false;
         }
+
         public static Produs CitireFisierP(string line)
         {
             string[] data = line.Split(',');
 
             if (data.Length == 5 &&
-                int.TryParse(data[0].Trim(), out int nrRaion) &&
                 Enum.TryParse(data[1].Trim(), out RaionType type) &&
                 double.TryParse(data[3].Trim(), out double price) &&
                 int.TryParse(data[4].Trim(), out int quantity))
             {
                 return new Produs(
-                    nrRaion,           // ID
-                    type,              // Categoria
-                    data[2].Trim(),    // Nume
-                    price,             // Pret
-                    quantity           // Stoc
+                    type,
+                    data[2].Trim(),
+                    price,
+                    quantity
                 );
             }
-            else
-            {
-                Console.WriteLine("Invalid data format for Produs.");
-                return null;
-            }
+
+            Console.WriteLine("Date invalide pentru Produs.");
+            return null;
         }
 
-        public void InsertProdus() // Tema #3
+        public void InsertProdus()
         {
             InsertRaion();
 
@@ -68,59 +57,36 @@ namespace SuperMarket
             {
                 Console.Write("Numele produsului: ");
                 Name = Console.ReadLine();
+                if (Name.Length < 3)
+                    Console.WriteLine("Numele trebuie sa aiba cel putin 3 caractere.");
             } while (Name.Length < 3);
 
-            // For Price
-            do
+            while (true)
             {
-                try
+                Console.Write("Pret/Bucata: ");
+                if (double.TryParse(Console.ReadLine(), out double price) && price > 0)
                 {
-                    Console.Write("Pret/Bucata: ");
-                    Price = int.Parse(Console.ReadLine());
-
-                    if (Price <= 0)
-                    {
-                        Console.WriteLine("Pretul trebuie sa fie un numar pozitiv.");
-                    }
-                    else
-                    {
-                        break; // Exit the loop if the price is valid
-                    }
+                    Price = price;
+                    break;
                 }
-                catch
-                {
-                    Console.WriteLine("Input invalid. Introduceti un numar valid pentru pret.");
-                }
-            } while (true);
+                Console.WriteLine("Pret invalid. Introduceti un numar pozitiv.");
+            }
 
-            // For Quantity
-            do
+            while (true)
             {
-                try
+                Console.Write("Cantitate: ");
+                if (int.TryParse(Console.ReadLine(), out int quantity) && quantity > 0)
                 {
-                    Console.Write("Cantitate: ");
-                    Quantity = int.Parse(Console.ReadLine());
-
-                    if (Quantity <= 0)
-                    {
-                        Console.WriteLine("Cantitatea trebuie sa fie un numar pozitiv.");
-                    }
-                    else
-                    {
-                        break; // Exit the loop if the quantity is valid
-                    }
+                    Quantity = quantity;
+                    break;
                 }
-                catch
-                {
-                    Console.WriteLine("Input invalid. Introduceti un numar valid pentru cantitate.");
-                }
-            } while (true);
-
+                Console.WriteLine("Cantitate invalida. Introduceti un numar pozitiv.");
+            }
         }
-        public override string ToString() // Tema #4
+
+        public override string ToString()
         {
             return $"{base.ToString()},{Name},{Price},{Quantity}";
         }
-
     }
 }

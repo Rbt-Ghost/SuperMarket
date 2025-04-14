@@ -1,97 +1,118 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SuperMarket // Tema #1
+namespace SuperMarket
 {
     class Casier : Persoana
     {
-        public int nrCasa {  get; set; } // Tema #2 Adaugarea Auto-Properties
-        public double Salary { get; set; }
+        private int nrCasa;
+        private double salary;
+
+        public int NrCasa
+        {
+            get => nrCasa;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("Numarul casei nu poate fi negativ.");
+                nrCasa = value;
+            }
+        }
+
+        public double Salary
+        {
+            get => salary;
+            set
+            {
+                if (value < 2000)
+                    throw new ArgumentOutOfRangeException("Salariul trebuie sa fie cel putin 2000.");
+                salary = value;
+            }
+        }
 
         public Casier() { }
-        public Casier(string Name, int Age, int ID, int nrCasa, double Salary)
-            : base(Name, Age, ID)
+
+        public Casier(string name, int age, int id, int nrCasa, double salary)
+            : base(name, age, id)
         {
-            this.nrCasa = nrCasa;
-            this.Salary = Salary;
-        }
-        //public void DisplayCasierInfo()
-        //{
-        //  DisplayInfo();
-        //Console.WriteLine($" Casa: {nrCasa}, Salary: {Salary}");
-        //}
-        public string DisplayCasierInfo()
-        {
-            return DisplayInfo() + $", Casa: {nrCasa}, Salariu: {Salary}";
+            NrCasa = nrCasa;
+            Salary = salary;
         }
 
-        public bool CautareCasier (string SrcName) // Tema #2 Cautare dupa Nume
+        public string DisplayCasierInfo()
+        {
+            return DisplayInfo() + $", Casa: {NrCasa}, Salariu: {Salary}";
+        }
+
+        public bool CautareCasier(string SrcName)
         {
             return CautarePers(SrcName);
         }
+
         public static Casier CitireFisierC(string line)
         {
             string[] data = line.Split(',');
 
             if (data.Length == 5)
             {
-                return new Casier(
-                    data[0].Trim(),                  // Name
-                    int.Parse(data[1].Trim()),        // Age
-                    int.Parse(data[2].Trim()),        // ID
-                    int.Parse(data[3].Trim()),        // RaionID
-                    double.Parse(data[4].Trim())      // Salary
-                );
+                try
+                {
+                    return new Casier(
+                        data[0].Trim(),                  // Name
+                        int.Parse(data[1].Trim()),       // Age
+                        int.Parse(data[2].Trim()),       // ID
+                        int.Parse(data[3].Trim()),       // NrCasa
+                        double.Parse(data[4].Trim())     // Salary
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Eroare la citirea casierului: " + ex.Message);
+                    return null;
+                }
             }
             else
             {
-                Console.WriteLine("Invalid data format for Casier.");
+                Console.WriteLine("Format invalid al datelor pentru Casier.");
                 return null;
             }
         }
 
-        public void InsertCasier() // Tema #3
+        public void InsertCasier()
         {
             InsertPers();
 
-            do
+            while (true)
             {
-                Console.Write("NrCasa: ");
-                nrCasa = int.Parse(Console.ReadLine());
-            } while (0 > nrCasa);
+                try
+                {
+                    Console.Write("NrCasa: ");
+                    NrCasa = int.Parse(Console.ReadLine());
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Eroare: " + ex.Message);
+                }
+            }
 
-            do
+            while (true)
             {
                 try
                 {
                     Console.Write("Salariu: ");
-                    Salary = int.Parse(Console.ReadLine());
-
-                    if (Salary < 2000)
-                    {
-                        Console.WriteLine("Salariu invalid. Introduceti un salariu de cel putin 2000.");
-                    }
-                    else
-                    {
-                        break; // Exit the loop if the salary is valid
-                    }
+                    Salary = double.Parse(Console.ReadLine());
+                    break;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Input invalid. Introduceti un numar valid.");
+                    Console.WriteLine("Eroare: " + ex.Message);
                 }
-            } while (true);
-
+            }
         }
 
-        public override string ToString() // Tema #4
+        public override string ToString()
         {
-            return $"{base.ToString()},{nrCasa},{Salary}";
+            return $"{base.ToString()},{NrCasa},{Salary}";
         }
-
     }
 }

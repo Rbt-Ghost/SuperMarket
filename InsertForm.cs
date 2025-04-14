@@ -11,6 +11,7 @@ namespace SuperMarket
         private ComboBox cmbInsertType;
         private Panel pnlInputs;
         private Button btnInsert;
+        private Label lblError;
         private Dictionary<string, List<Control>> inputFields;
 
         public InsertForm()
@@ -24,6 +25,7 @@ namespace SuperMarket
             this.cmbInsertType = new ComboBox();
             this.pnlInputs = new Panel();
             this.btnInsert = new Button();
+            this.lblError = new Label { ForeColor = System.Drawing.Color.Red, AutoSize = true };
 
             // ComboBox for selection
             this.cmbInsertType.Items.AddRange(new object[] { "Manager", "Casier", "Raion", "Produs" });
@@ -41,11 +43,15 @@ namespace SuperMarket
             this.btnInsert.Size = new System.Drawing.Size(200, 40);
             this.btnInsert.Click += new EventHandler(btnInsert_Click);
 
+            // Error Label
+            this.lblError.Location = new System.Drawing.Point(30, 450);
+
             // Form Properties
-            this.ClientSize = new System.Drawing.Size(500, 450);
+            this.ClientSize = new System.Drawing.Size(500, 500);
             this.Controls.Add(this.cmbInsertType);
             this.Controls.Add(this.pnlInputs);
             this.Controls.Add(this.btnInsert);
+            this.Controls.Add(this.lblError);
             this.Text = "Insert Data";
         }
 
@@ -103,6 +109,11 @@ namespace SuperMarket
             return comboBox;
         }
 
+        private CheckBox CreateCheckBox(string name)
+        {
+            return new CheckBox { Name = name, Width = 20, Checked = false, Enabled = false }; // Disable the checkbox
+        }
+
         private void cmbInsertType_SelectedIndexChanged(object sender, EventArgs e)
         {
             pnlInputs.Controls.Clear();
@@ -115,18 +126,98 @@ namespace SuperMarket
                     control.Location = new System.Drawing.Point(10, y);
                     pnlInputs.Controls.Add(control);
                     y += 30;
+
+                    if (control is TextBox textBox)
+                    {
+                        // Place the checkbox a little higher
+                        var checkBox = CreateCheckBox(textBox.Name + "Check");
+                        checkBox.Location = new System.Drawing.Point(220, y - 30); // Adjust the position to make it higher
+                        pnlInputs.Controls.Add(checkBox);
+                    }
+
+                    if (control is ComboBox comboBox)
+                    {
+                        // Create checkbox for ComboBox (Enum type)
+                        var checkBox = CreateCheckBox(comboBox.Name + "Check");
+                        checkBox.Location = new System.Drawing.Point(220, y - 30); // Adjust position for ComboBox checkboxes
+                        pnlInputs.Controls.Add(checkBox);
+                    }
                 }
             }
         }
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
+            lblError.Text = string.Empty;
+            bool allValid = true;
+
             string selectedType = cmbInsertType.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(selectedType))
             {
-                MessageBox.Show("Please select a category first!");
+                lblError.Text = "Please select a category first!";
                 return;
             }
+
+            foreach (var control in pnlInputs.Controls)
+            {
+                if (control is TextBox textBox)
+                {
+                    var checkBox = pnlInputs.Controls[textBox.Name + "Check"] as CheckBox;
+                    if (checkBox != null)
+                    {
+                        bool isValid = ValidateInput(textBox);
+                        checkBox.Checked = isValid;
+
+                        if (!isValid)
+                        {
+                            allValid = false;
+                        }
+                    }
+                }
+
+                if (control is ComboBox comboBox)
+                {
+                    var checkBox = pnlInputs.Controls[comboBox.Name + "Check"] as CheckBox;
+                    if (checkBox != null)
+                    {
+                        bool isValid = ValidateComboBox(comboBox);
+                        checkBox.Checked = isValid;
+
+                        if (!isValid)
+                        {
+                            allValid = false;
+                        }
+                    }
+                }
+            }
+
+            if (!allValid)
+            {
+                lblError.Text = "Error: Incorrect format!";
+                return;
+            }
+
+            // If everything is valid, insert data
+            InsertData(selectedType);
+            MessageBox.Show("Data Inserted Successfully!");
+        }
+
+        private bool ValidateInput(TextBox textBox)
+        {
+            if (textBox.Name == "txtAge" || textBox.Name == "txtID" || textBox.Name == "txtSalary" || textBox.Name == "txtNrcasa" || textBox.Name == "txtPrice" || textBox.Name == "txtQuantity")
+            {
+                return int.TryParse(textBox.Text, out _) || double.TryParse(textBox.Text, out _);
+            }
+            return !string.IsNullOrEmpty(textBox.Text);
+        }
+
+        private bool ValidateComboBox(ComboBox comboBox)
+        {
+            return comboBox.SelectedIndex != -1; // Ensure a valid selection is made
+        }
+
+        private void InsertData(string selectedType)
+        {
             if (selectedType == "Manager")
             {
                 Manager newManager = new Manager(
@@ -145,7 +236,7 @@ namespace SuperMarket
                     GetTextBoxValue("txtName"),
                     int.Parse(GetTextBoxValue("txtAge")),
                     int.Parse(GetTextBoxValue("txtID")),
-                    int.Parse(GetTextBoxValue("txtNrcasa")),
+                    int.Parse(GetTextBoxValue("txtNrCasa")),
                     double.Parse(GetTextBoxValue("txtSalary"))
                 );
                 Program.casier.Add(newCasier);
@@ -153,30 +244,25 @@ namespace SuperMarket
             }
             else if (selectedType == "Raion")
             {
-                RaionType selectedRaionType = (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion"));
-                int nrRaion = (int)selectedRaionType; // Auto-generate number based on enum
-
-                Raion newRaion = new Raion(nrRaion, selectedRaionType);
-
-                Program.raion.Add(newRaion);
-                File.AppendAllText(Program.fRaion, newRaion.ToString() + Environment.NewLine);
+                RaionType rt = (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion"));
+                Raion r = new Raion(rt);
+                MessageBox.Show($"Raion: {r.ToString()}");
+                Program.raion.Add(r);
+                File.AppendAllText(Program.fRaion, r.ToString() + Environment.NewLine);
             }
             else if (selectedType == "Produs")
             {
-                int nrRaion = Program.raion.Count + 1; // Auto-generate Raion Number
-
-                Produs newProdus = new Produs(
-                    nrRaion,
-                    (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion")),
+                RaionType rt = (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion"));
+                Produs p = new Produs(
+                    rt,
                     GetTextBoxValue("txtName"),
                     double.Parse(GetTextBoxValue("txtPrice")),
                     int.Parse(GetTextBoxValue("txtQuantity"))
                 );
-                Program.produs.Add(newProdus);
-                File.AppendAllText(Program.fProdus, newProdus.ToString() + Environment.NewLine);
+                MessageBox.Show($"Produs: {p.ToString()}");
+                Program.produs.Add(p);
+                File.AppendAllText(Program.fProdus, p.ToString() + Environment.NewLine);
             }
-
-            MessageBox.Show("Data Inserted Successfully!");
         }
 
         private string GetTextBoxValue(string name)

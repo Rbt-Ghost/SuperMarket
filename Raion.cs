@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace SuperMarket
 {
@@ -19,26 +13,32 @@ namespace SuperMarket
         Jucarii = 7
     }
 
-    class Raion // Tema #1
+    class Raion
     {
-        public RaionType Type { get; set; } // Tema #2 Adaugarea Auto-Properties
+        private RaionType type;
+
+        public RaionType Type
+        {
+            get => type;
+            set
+            {
+                if (!Enum.IsDefined(typeof(RaionType), value))
+                    throw new ArgumentException("Tipul de raion este invalid.");
+                type = value;
+            }
+        }
 
         public Raion() { }
 
-        public Raion(int nr, RaionType type)
+        public Raion(RaionType type)
         {
-            this.Type = type;
+            Type = type;
         }
 
-        //public void DisplayRaionInfo()
-        //{
-        //  Console.WriteLine($"Raion: {(int)Type}, Tip: {Type}");
-        //}
         public string DisplayRaionInfo()
         {
             return $"Raion Nr: {(int)Type}, Tip: {Type}";
         }
-
 
         public bool CautareRaion(string srcType)
         {
@@ -49,45 +49,51 @@ namespace SuperMarket
         {
             string[] data = line.Split(',');
 
-            if (data.Length == 2 && int.TryParse(data[0], out int nr))
+            if (data.Length == 2 && Enum.TryParse(data[1].Trim(), out RaionType parsedType))
             {
-                if (Enum.TryParse(data[1].Trim(), out RaionType type))
+                try
                 {
-                    return new Raion(nr, type);
+                    return new Raion(parsedType);
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"Invalid Raion Type: {data[1].Trim()}");
+                    Console.WriteLine("Eroare la crearea obiectului Raion: " + ex.Message);
                 }
             }
             else
             {
-                Console.WriteLine("Invalid data format for Raion.");
+                Console.WriteLine("Date invalide pentru Raion.");
             }
             return null;
         }
 
         public void InsertRaion()
         {
-            Console.WriteLine("Select Raion Type:");
-            foreach (var type in Enum.GetValues(typeof(RaionType)))
+            Console.WriteLine("Selectati tipul Raionului:");
+            foreach (var t in Enum.GetValues(typeof(RaionType)))
             {
-                Console.WriteLine($"{(int)type}. {type}");
+                Console.WriteLine($"{(int)t}. {t}");
             }
 
-            int choice;
-            do
+            while (true)
             {
-                Console.Write("Choice: ");
-            } while (!int.TryParse(Console.ReadLine(), out choice) || !Enum.IsDefined(typeof(RaionType), choice));
-
-            Type = (RaionType)choice;
+                Console.Write("Alegere: ");
+                if (int.TryParse(Console.ReadLine(), out int choice) &&
+                    Enum.IsDefined(typeof(RaionType), choice))
+                {
+                    Type = (RaionType)choice;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Tip invalid. Incercati din nou.");
+                }
+            }
         }
 
-        public override string ToString() // Tema #4
+        public override string ToString()
         {
             return $"{(int)Type},{Type}";
         }
     }
 }
-

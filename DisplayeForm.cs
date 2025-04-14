@@ -3,14 +3,14 @@ using System.Windows.Forms;
 
 namespace SuperMarket
 {
-    public partial class DisplayForm : Form // Tema #6
+    public partial class DisplayForm : Form // Tema #5
     {
-        private ListBox lstDisplayData;  // ListBox to display the data
+        private ListBox lstDisplayData; 
 
         public DisplayForm()
         {
             InitializeComponent();
-            DisplayData();  // Call to display data when the form is initialized
+            DisplayData(); 
         }
 
         // Method to display the data in the ListBox

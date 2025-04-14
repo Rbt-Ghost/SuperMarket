@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SuperMarket
 {
-    public partial class SearchForm : Form // Tema #6
+    public partial class SearchForm : Form // Tema #7
     {
         private ComboBox cmbSearchType;
         private TextBox txtSearch;

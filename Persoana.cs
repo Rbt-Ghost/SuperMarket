@@ -1,44 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-namespace SuperMarket // Tema #1
+namespace SuperMarket
 {
     class Persoana
     {
-        public string Name { get; set; } // Tema #2 Adaugarea Auto-Properties
-        public int Age { get; set; }
-        public int ID { get; set; }
-        public Persoana() { }
+        private string name;
+        private int age;
+        private int id;
 
-        public Persoana(string Name, int Age, int ID)
+        public string Name
         {
-            this.Name = Name;
-            this.Age = Age;
-            this.ID = ID;
+            get => name;
+            set
+            {
+                if (value.Length < 3)
+                    throw new ArgumentException("Numele trebuie sa aiba cel putin 3 caractere.");
+                name = value;
+            }
         }
 
-        //public void DisplayInfo()
-        //{
-        //  Console.WriteLine($"Name: {Name}, Age: {Age}, ID: {ID}");
-        //}
+        public int Age
+        {
+            get => age;
+            set
+            {
+                if (value < 16 || value > 120)
+                    throw new ArgumentOutOfRangeException("Varsta trebuie sa fie intre 16 si 120.");
+                age = value;
+            }
+        }
+
+        public int ID
+        {
+            get => id;
+            set
+            {
+                if (value < 100000 || value > 999999)
+                    throw new ArgumentOutOfRangeException("ID-ul trebuie sa fie format din 6 cifre.");
+                id = value;
+            }
+        }
+
+        public Persoana() { }
+
+        public Persoana(string name, int age, int id)
+        {
+            Name = name;
+            Age = age;
+            ID = id;
+        }
+
         public string DisplayInfo()
         {
             return $"Name: {Name}, Varsta: {Age}, ID: {ID}";
         }
 
-
-        public bool CautarePers(string SrcName) // Tema #2 Cautare dupa Nume
+        public bool CautarePers(string SrcName)
         {
-            if (SrcName == Name)
-                return true;
-            else return false;
+            return SrcName == Name;
         }
-        public static Persoana CitireFisier(string file) 
+
+        public static Persoana CitireFisier(string file)
         {
             Persoana pers = null;
 
@@ -70,62 +93,52 @@ namespace SuperMarket // Tema #1
             return pers;
         }
 
-        public void InsertPers() // Tema #3
+        public void InsertPers()
         {
-            do
+            while (true)
             {
-                Console.Write("Nume: ");
-                Name = Console.ReadLine();
-            } while (Name.Length < 3);
+                try
+                {
+                    Console.Write("Nume: ");
+                    Name = Console.ReadLine();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Eroare: {ex.Message}");
+                }
+            }
 
-            do
+            while (true)
             {
                 try
                 {
                     Console.Write("Varsta: ");
                     Age = int.Parse(Console.ReadLine());
-
-                    if (Age < 16 || Age > 120)
-                    {
-                        Console.WriteLine("Varsta invalida. Introduceti o varsta intre 0 si 150.");
-                    }
-                    else
-                    {
-                        break; // Exit the loop if the age is valid
-                    }
+                    break;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Input invalid. Introduceti un numar valid.");
+                    Console.WriteLine($"Eroare: {ex.Message}");
                 }
-            } while (true);
+            }
 
-
-            do
+            while (true)
             {
                 try
                 {
                     Console.Write("ID: ");
                     ID = int.Parse(Console.ReadLine());
-
-                    if (ID < 100000 || ID > 999999)
-                    {
-                        Console.WriteLine("ID invalid. Introduceti un ID format din 6 cifre.");
-                    }
-                    else
-                    {
-                        break; // Exit the loop if the ID is valid
-                    }
+                    break;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Input invalid. Introduceti un numar valid.");
+                    Console.WriteLine($"Eroare: {ex.Message}");
                 }
-            } while (true);
-
+            }
         }
 
-        public override string ToString() // Tema #4
+        public override string ToString()
         {
             return $"{Name},{Age},{ID}";
         }
