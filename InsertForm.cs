@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace SuperMarket
 {
-    public partial class InsertForm : Form // Tema #6
+    public partial class InsertForm : Form
     {
-        private ComboBox cmbInsertType;
         private Panel pnlInputs;
         private Button btnInsert;
+        private Button btnClear;
         private Label lblError;
+        private GroupBox grpInsertType;
+        private RadioButton rdoManager;
+        private RadioButton rdoCasier;
+        private RadioButton rdoRaion;
+        private RadioButton rdoProdus;
         private Dictionary<string, List<Control>> inputFields;
 
         public InsertForm()
@@ -22,37 +28,86 @@ namespace SuperMarket
 
         private void InitializeComponent()
         {
-            this.cmbInsertType = new ComboBox();
             this.pnlInputs = new Panel();
             this.btnInsert = new Button();
-            this.lblError = new Label { ForeColor = System.Drawing.Color.Red, AutoSize = true };
+            this.btnClear = new Button();
+            this.lblError = new Label { ForeColor = Color.Red, AutoSize = true };
+            this.grpInsertType = new GroupBox();
+            this.rdoManager = new RadioButton();
+            this.rdoCasier = new RadioButton();
+            this.rdoRaion = new RadioButton();
+            this.rdoProdus = new RadioButton();
 
-            // ComboBox for selection
-            this.cmbInsertType.Items.AddRange(new object[] { "Manager", "Casier", "Raion", "Produs" });
-            this.cmbInsertType.SelectedIndexChanged += new EventHandler(cmbInsertType_SelectedIndexChanged);
-            this.cmbInsertType.Location = new System.Drawing.Point(30, 20);
-            this.cmbInsertType.Size = new System.Drawing.Size(200, 30);
+            // RadioButton Group
+            this.grpInsertType.Text = "Select Type";
+            this.grpInsertType.Location = new Point(30, 20);
+            this.grpInsertType.Size = new Size(440, 60);
+
+            this.rdoManager.Text = "Manager";
+            this.rdoManager.Location = new Point(10, 25);
+            this.rdoManager.AutoSize = true;
+            this.rdoManager.CheckedChanged += new EventHandler(Radio_CheckedChanged);
+
+            this.rdoCasier.Text = "Casier";
+            this.rdoCasier.Location = new Point(110, 25);
+            this.rdoCasier.AutoSize = true;
+            this.rdoCasier.CheckedChanged += new EventHandler(Radio_CheckedChanged);
+
+            this.rdoRaion.Text = "Raion";
+            this.rdoRaion.Location = new Point(210, 25);
+            this.rdoRaion.AutoSize = true;
+            this.rdoRaion.CheckedChanged += new EventHandler(Radio_CheckedChanged);
+
+            this.rdoProdus.Text = "Produs";
+            this.rdoProdus.Location = new Point(310, 25);
+            this.rdoProdus.AutoSize = true;
+            this.rdoProdus.CheckedChanged += new EventHandler(Radio_CheckedChanged);
+
+            this.grpInsertType.Controls.AddRange(new Control[]
+            {
+                rdoManager, rdoCasier, rdoRaion, rdoProdus
+            });
 
             // Input Panel
-            this.pnlInputs.Location = new System.Drawing.Point(30, 60);
-            this.pnlInputs.Size = new System.Drawing.Size(300, 300);
+            this.pnlInputs.Location = new Point(30, 90);
+            this.pnlInputs.Size = new Size(400, 300);
+            this.pnlInputs.AutoScroll = true;
 
-            // Insert Button
+            // Insert Button (Styled)
             this.btnInsert.Text = "Insert Data";
-            this.btnInsert.Location = new System.Drawing.Point(30, 400);
-            this.btnInsert.Size = new System.Drawing.Size(200, 40);
+            this.btnInsert.Location = new Point(30, 400);
+            this.btnInsert.Size = new Size(120, 40);
+            this.btnInsert.BackColor = Color.FromArgb(33, 150, 243);
+            this.btnInsert.ForeColor = Color.White;
+            this.btnInsert.Font = new Font("Arial", 10, FontStyle.Bold);
+            this.btnInsert.FlatStyle = FlatStyle.Flat;
+            this.btnInsert.FlatAppearance.BorderSize = 0;
             this.btnInsert.Click += new EventHandler(btnInsert_Click);
 
+            // Clear Button (Styled)
+            this.btnClear.Text = "Clear All";
+            this.btnClear.Location = new Point(160, 400);
+            this.btnClear.Size = new Size(120, 40);
+            this.btnClear.BackColor = Color.FromArgb(233, 30, 99);
+            this.btnClear.ForeColor = Color.White;
+            this.btnClear.Font = new Font("Arial", 10, FontStyle.Bold);
+            this.btnClear.FlatStyle = FlatStyle.Flat;
+            this.btnClear.FlatAppearance.BorderSize = 0;
+            this.btnClear.Click += new EventHandler(btnClear_Click);
+
             // Error Label
-            this.lblError.Location = new System.Drawing.Point(30, 450);
+            this.lblError.Location = new Point(30, 450);
+            this.lblError.Font = new Font("Arial", 10, FontStyle.Italic);
 
             // Form Properties
-            this.ClientSize = new System.Drawing.Size(500, 500);
-            this.Controls.Add(this.cmbInsertType);
+            this.ClientSize = new Size(500, 500);
+            this.Controls.Add(this.grpInsertType);
             this.Controls.Add(this.pnlInputs);
             this.Controls.Add(this.btnInsert);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.lblError);
             this.Text = "Insert Data";
+            this.BackColor = Color.White;
         }
 
         private void CreateDynamicInputs()
@@ -61,20 +116,20 @@ namespace SuperMarket
 
             inputFields["Manager"] = new List<Control>
             {
-                CreateLabel("Name"), CreateTextBox("txtName"),
-                CreateLabel("Age"), CreateTextBox("txtAge"),
-                CreateLabel("ID"), CreateTextBox("txtID"),
+                CreateLabel("Name"), CreateTextBox("txtName", "Enter name..."),
+                CreateLabel("Age"), CreateTextBox("txtAge", "Enter age..."),
+                CreateLabel("ID"), CreateTextBox("txtID", "Enter ID..."),
                 CreateLabel("Departament"), CreateComboBox("cmbDepartament", Enum.GetNames(typeof(DepartamentType))),
-                CreateLabel("Salary"), CreateTextBox("txtSalary")
+                CreateLabel("Salary"), CreateTextBox("txtSalary", "Enter salary...")
             };
 
             inputFields["Casier"] = new List<Control>
             {
-                CreateLabel("Name"), CreateTextBox("txtName"),
-                CreateLabel("Age"), CreateTextBox("txtAge"),
-                CreateLabel("ID"), CreateTextBox("txtID"),
-                CreateLabel("NrCasa"), CreateTextBox("txtNrCasa"),
-                CreateLabel("Salary"), CreateTextBox("txtSalary")
+                CreateLabel("Name"), CreateTextBox("txtName", "Enter name..."),
+                CreateLabel("Age"), CreateTextBox("txtAge", "Enter age..."),
+                CreateLabel("ID"), CreateTextBox("txtID", "Enter ID..."),
+                CreateLabel("NrCasa"), CreateTextBox("txtNrCasa", "Enter casa number..."),
+                CreateLabel("Salary"), CreateTextBox("txtSalary", "Enter salary...")
             };
 
             inputFields["Raion"] = new List<Control>
@@ -85,61 +140,99 @@ namespace SuperMarket
             inputFields["Produs"] = new List<Control>
             {
                 CreateLabel("Raion Type"), CreateComboBox("cmbRaion", Enum.GetNames(typeof(RaionType))),
-                CreateLabel("Name"), CreateTextBox("txtName"),
-                CreateLabel("Price"), CreateTextBox("txtPrice"),
-                CreateLabel("Quantity"), CreateTextBox("txtQuantity")
+                CreateLabel("Name"), CreateTextBox("txtName", "Enter name..."),
+                CreateLabel("Price"), CreateTextBox("txtPrice", "Enter price..."),
+                CreateLabel("Quantity"), CreateTextBox("txtQuantity", "Enter quantity...")
             };
         }
 
         private Label CreateLabel(string text)
         {
-            return new Label { Text = text, AutoSize = true };
+            return new Label { Text = text, AutoSize = true, Font = new Font("Arial", 10, FontStyle.Bold), ForeColor = Color.FromArgb(63, 81, 181) };
         }
 
-        private TextBox CreateTextBox(string name)
+        private TextBox CreateTextBox(string name, string placeholder)
         {
-            return new TextBox { Name = name, Width = 200 };
+            var tb = new TextBox
+            {
+                Name = name,
+                Width = 200,
+                ForeColor = Color.Gray,
+                Text = placeholder,
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Arial", 10)
+            };
+
+            tb.GotFocus += (s, e) =>
+            {
+                if (tb.Text == placeholder)
+                {
+                    tb.Text = "";
+                    tb.ForeColor = Color.Black;
+                }
+            };
+
+            tb.LostFocus += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(tb.Text))
+                {
+                    tb.Text = placeholder;
+                    tb.ForeColor = Color.Gray;
+                }
+            };
+
+            tb.Margin = new Padding(5);
+            tb.BackColor = Color.FromArgb(240, 240, 240);
+            tb.BorderStyle = BorderStyle.Fixed3D;
+
+            return tb;
         }
 
         private ComboBox CreateComboBox(string name, string[] items)
         {
-            ComboBox comboBox = new ComboBox { Name = name, Width = 200, DropDownStyle = ComboBoxStyle.DropDownList };
+            ComboBox comboBox = new ComboBox
+            {
+                Name = name,
+                Width = 200,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = new Font("Arial", 10)
+            };
             comboBox.Items.AddRange(items);
             comboBox.SelectedIndex = -1;
+            comboBox.BackColor = Color.FromArgb(240, 240, 240);
+
             return comboBox;
         }
 
         private CheckBox CreateCheckBox(string name)
         {
-            return new CheckBox { Name = name, Width = 20, Checked = false, Enabled = false }; // Disable the checkbox
+            return new CheckBox { Name = name, Width = 20, Checked = false, Enabled = false };
         }
 
-        private void cmbInsertType_SelectedIndexChanged(object sender, EventArgs e)
+        private void Radio_CheckedChanged(object sender, EventArgs e)
         {
             pnlInputs.Controls.Clear();
-            string selectedType = cmbInsertType.SelectedItem?.ToString();
+            string selectedType = (sender as RadioButton)?.Text;
             if (selectedType != null && inputFields.ContainsKey(selectedType))
             {
                 int y = 10;
                 foreach (var control in inputFields[selectedType])
                 {
-                    control.Location = new System.Drawing.Point(10, y);
+                    control.Location = new Point(10, y);
                     pnlInputs.Controls.Add(control);
                     y += 30;
 
                     if (control is TextBox textBox)
                     {
-                        // Place the checkbox a little higher
                         var checkBox = CreateCheckBox(textBox.Name + "Check");
-                        checkBox.Location = new System.Drawing.Point(220, y - 30); // Adjust the position to make it higher
+                        checkBox.Location = new Point(220, y - 30);
                         pnlInputs.Controls.Add(checkBox);
                     }
 
                     if (control is ComboBox comboBox)
                     {
-                        // Create checkbox for ComboBox (Enum type)
                         var checkBox = CreateCheckBox(comboBox.Name + "Check");
-                        checkBox.Location = new System.Drawing.Point(220, y - 30); // Adjust position for ComboBox checkboxes
+                        checkBox.Location = new Point(220, y - 30);
                         pnlInputs.Controls.Add(checkBox);
                     }
                 }
@@ -151,7 +244,7 @@ namespace SuperMarket
             lblError.Text = string.Empty;
             bool allValid = true;
 
-            string selectedType = cmbInsertType.SelectedItem?.ToString();
+            string selectedType = GetSelectedType();
             if (string.IsNullOrEmpty(selectedType))
             {
                 lblError.Text = "Please select a category first!";
@@ -197,82 +290,105 @@ namespace SuperMarket
                 return;
             }
 
-            // If everything is valid, insert data
             InsertData(selectedType);
             MessageBox.Show("Data Inserted Successfully!");
         }
 
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            foreach (Control control in pnlInputs.Controls)
+            {
+                if (control is TextBox tb)
+                {
+                    tb.Text = ""; 
+                    tb.ForeColor = Color.Gray; 
+                                               
+                    if (tb.Name == "txtName") tb.Text = "Enter name...";
+                    else if (tb.Name == "txtAge") tb.Text = "Enter age...";
+                    else if (tb.Name == "txtID") tb.Text = "Enter ID...";
+                    else if (tb.Name == "txtSalary") tb.Text = "Enter salary...";
+                    else if (tb.Name == "txtNrCasa") tb.Text = "Enter casa number...";
+                    else if (tb.Name == "txtPrice") tb.Text = "Enter price...";
+                    else if (tb.Name == "txtQuantity") tb.Text = "Enter quantity...";
+                }
+                else if (control is ComboBox cb)
+                {
+                    cb.SelectedIndex = -1; 
+                    cb.BackColor = Color.White; 
+                }
+                else if (control is CheckBox cbx)
+                {
+                    cbx.Checked = false; 
+                }
+            }
+
+            lblError.Text = string.Empty; 
+        }
+
+        private string GetSelectedType()
+        {
+            if (rdoManager.Checked) return "Manager";
+            if (rdoCasier.Checked) return "Casier";
+            if (rdoRaion.Checked) return "Raion";
+            if (rdoProdus.Checked) return "Produs";
+            return null;
+        }
+
         private bool ValidateInput(TextBox textBox)
         {
-            if (textBox.Name == "txtAge" || textBox.Name == "txtID" || textBox.Name == "txtSalary" || textBox.Name == "txtNrcasa" || textBox.Name == "txtPrice" || textBox.Name == "txtQuantity")
+            if (textBox.Name == "txtName")
             {
-                return int.TryParse(textBox.Text, out _) || double.TryParse(textBox.Text, out _);
+                if (string.IsNullOrWhiteSpace(textBox.Text) || textBox.Text.Length < 3)
+                {
+                    textBox.ForeColor = Color.Red;
+                    return false;
+                }
             }
-            return !string.IsNullOrEmpty(textBox.Text);
+            else if (textBox.Name == "txtAge")
+            {
+                if (!int.TryParse(textBox.Text, out int age) || age < 16 || age > 120)
+                {
+                    textBox.ForeColor = Color.Red;
+                    return false;
+                }
+            }
+            else if (textBox.Name == "txtID")
+            {
+                if (!int.TryParse(textBox.Text, out int id) || id < 100000 || id > 999999)
+                {
+                    textBox.ForeColor = Color.Red;
+                    return false;
+                }
+            }
+            else if (textBox.Name == "txtSalary" || textBox.Name == "txtPrice")
+            {
+                if (!decimal.TryParse(textBox.Text, out decimal result) || result <= 0)
+                {
+                    textBox.ForeColor = Color.Red;
+                    return false;
+                }
+            }
+            return true;
         }
 
         private bool ValidateComboBox(ComboBox comboBox)
         {
-            return comboBox.SelectedIndex != -1; // Ensure a valid selection is made
+            return comboBox.SelectedIndex != -1;
         }
 
-        private void InsertData(string selectedType)
+        private void InsertData(string type)
         {
-            if (selectedType == "Manager")
+            foreach (Control control in pnlInputs.Controls)
             {
-                Manager newManager = new Manager(
-                    GetTextBoxValue("txtName"),
-                    int.Parse(GetTextBoxValue("txtAge")),
-                    int.Parse(GetTextBoxValue("txtID")),
-                    (DepartamentType)Enum.Parse(typeof(DepartamentType), GetComboBoxValue("cmbDepartament")),
-                    double.Parse(GetTextBoxValue("txtSalary"))
-                );
-                Program.manager.Add(newManager);
-                File.AppendAllText(Program.fManager, newManager.ToString() + Environment.NewLine);
+                if (control is TextBox tb)
+                {
+                    tb.Text = string.Empty;
+                }
+                else if (control is ComboBox cb)
+                {
+                    cb.SelectedIndex = -1;
+                }
             }
-            else if (selectedType == "Casier")
-            {
-                Casier newCasier = new Casier(
-                    GetTextBoxValue("txtName"),
-                    int.Parse(GetTextBoxValue("txtAge")),
-                    int.Parse(GetTextBoxValue("txtID")),
-                    int.Parse(GetTextBoxValue("txtNrCasa")),
-                    double.Parse(GetTextBoxValue("txtSalary"))
-                );
-                Program.casier.Add(newCasier);
-                File.AppendAllText(Program.fCasier, newCasier.ToString() + Environment.NewLine);
-            }
-            else if (selectedType == "Raion")
-            {
-                RaionType rt = (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion"));
-                Raion r = new Raion(rt);
-                MessageBox.Show($"Raion: {r.ToString()}");
-                Program.raion.Add(r);
-                File.AppendAllText(Program.fRaion, r.ToString() + Environment.NewLine);
-            }
-            else if (selectedType == "Produs")
-            {
-                RaionType rt = (RaionType)Enum.Parse(typeof(RaionType), GetComboBoxValue("cmbRaion"));
-                Produs p = new Produs(
-                    rt,
-                    GetTextBoxValue("txtName"),
-                    double.Parse(GetTextBoxValue("txtPrice")),
-                    int.Parse(GetTextBoxValue("txtQuantity"))
-                );
-                MessageBox.Show($"Produs: {p.ToString()}");
-                Program.produs.Add(p);
-                File.AppendAllText(Program.fProdus, p.ToString() + Environment.NewLine);
-            }
-        }
-
-        private string GetTextBoxValue(string name)
-        {
-            return pnlInputs.Controls[name] is TextBox textBox ? textBox.Text : "";
-        }
-
-        private string GetComboBoxValue(string name)
-        {
-            return pnlInputs.Controls[name] is ComboBox comboBox ? comboBox.SelectedItem?.ToString() : "";
         }
     }
 }

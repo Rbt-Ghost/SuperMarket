@@ -86,7 +86,7 @@ namespace SuperMarket
             }
             else
             {
-                Console.WriteLine("Format invalid al datelor.");
+                //Console.WriteLine("Format invalid al datelor.");
                 return null;
             }
         }

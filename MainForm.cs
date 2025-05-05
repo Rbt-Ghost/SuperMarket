@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SuperMarket
@@ -9,6 +10,7 @@ namespace SuperMarket
         private Button btnInsertData;
         private Button btnSearchData;
         private Button btnDisplayData;
+        private Label lblTitle;
 
         public MainForm()
         {
@@ -44,38 +46,75 @@ namespace SuperMarket
             this.btnInsertData = new Button();
             this.btnSearchData = new Button();
             this.btnDisplayData = new Button();
+            this.lblTitle = new Label();
+
+            // Common button style
+            Font buttonFont = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Color buttonColor = Color.FromArgb(52, 152, 219); // Blue
+            Size buttonSize = new Size(240, 45);
+
+            // Title Label
+            this.lblTitle.Text = "SuperMarket Menu";
+            this.lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            this.lblTitle.TextAlign = ContentAlignment.MiddleCenter;
+            this.lblTitle.Dock = DockStyle.Top;
+            this.lblTitle.Height = 60;
+            this.lblTitle.ForeColor = Color.FromArgb(44, 62, 80);
 
             // btnLoadData
-            this.btnLoadData.Location = new System.Drawing.Point(30, 30);
-            this.btnLoadData.Size = new System.Drawing.Size(200, 40);
-            this.btnLoadData.Text = "Load Data";
-            this.btnLoadData.Click += new System.EventHandler(this.btnLoadData_Click);
+            this.btnLoadData.Text = "🔄 Load Data";
+            this.btnLoadData.Size = buttonSize;
+            this.btnLoadData.Font = buttonFont;
+            this.btnLoadData.BackColor = buttonColor;
+            this.btnLoadData.ForeColor = Color.White;
+            this.btnLoadData.FlatStyle = FlatStyle.Flat;
+            this.btnLoadData.Location = new Point(30, 80);
+            this.btnLoadData.Click += new EventHandler(this.btnLoadData_Click);
 
             // btnInsertData
-            this.btnInsertData.Location = new System.Drawing.Point(30, 80);
-            this.btnInsertData.Size = new System.Drawing.Size(200, 40);
-            this.btnInsertData.Text = "Insert Data";
-            this.btnInsertData.Click += new System.EventHandler(this.btnInsertData_Click);
+            this.btnInsertData.Text = "➕ Insert Data";
+            this.btnInsertData.Size = buttonSize;
+            this.btnInsertData.Font = buttonFont;
+            this.btnInsertData.BackColor = buttonColor;
+            this.btnInsertData.ForeColor = Color.White;
+            this.btnInsertData.FlatStyle = FlatStyle.Flat;
+            this.btnInsertData.Location = new Point(30, 135);
+            this.btnInsertData.Click += new EventHandler(this.btnInsertData_Click);
 
             // btnSearchData
-            this.btnSearchData.Location = new System.Drawing.Point(30, 130);
-            this.btnSearchData.Size = new System.Drawing.Size(200, 40);
-            this.btnSearchData.Text = "Search Data";
-            this.btnSearchData.Click += new System.EventHandler(this.btnSearchData_Click);
+            this.btnSearchData.Text = "🔍 Search Data";
+            this.btnSearchData.Size = buttonSize;
+            this.btnSearchData.Font = buttonFont;
+            this.btnSearchData.BackColor = buttonColor;
+            this.btnSearchData.ForeColor = Color.White;
+            this.btnSearchData.FlatStyle = FlatStyle.Flat;
+            this.btnSearchData.Location = new Point(30, 190);
+            this.btnSearchData.Click += new EventHandler(this.btnSearchData_Click);
 
             // btnDisplayData
-            this.btnDisplayData.Location = new System.Drawing.Point(30, 180);
-            this.btnDisplayData.Size = new System.Drawing.Size(200, 40);
-            this.btnDisplayData.Text = "Display Data";
-            this.btnDisplayData.Click += new System.EventHandler(this.btnDisplayData_Click);
+            this.btnDisplayData.Text = "📋 Display Data";
+            this.btnDisplayData.Size = buttonSize;
+            this.btnDisplayData.Font = buttonFont;
+            this.btnDisplayData.BackColor = buttonColor;
+            this.btnDisplayData.ForeColor = Color.White;
+            this.btnDisplayData.FlatStyle = FlatStyle.Flat;
+            this.btnDisplayData.Location = new Point(30, 245);
+            this.btnDisplayData.Click += new EventHandler(this.btnDisplayData_Click);
 
             // MainForm
-            this.ClientSize = new System.Drawing.Size(300, 250);
+            this.Text = "SuperMarket Application";
+            this.BackColor = Color.White;
+            this.ClientSize = new Size(300, 330);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+
+            // Add controls
+            this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnLoadData);
             this.Controls.Add(this.btnInsertData);
             this.Controls.Add(this.btnSearchData);
             this.Controls.Add(this.btnDisplayData);
-            this.Text = "SuperMarket Application";
         }
     }
 }
