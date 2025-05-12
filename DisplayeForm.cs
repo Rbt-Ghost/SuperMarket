@@ -100,7 +100,8 @@ namespace SuperMarket
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            DisplayData();
+            Program.LoadData(); // Load data from files
+            DisplayData(); // Then display it in the list
         }
 
         // Displays selected data categories

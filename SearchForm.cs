@@ -12,6 +12,7 @@ namespace SuperMarket
         private RadioButton rdoProdus;
         private TextBox txtSearch;
         private Button btnSearch;
+        private Button btnDelete;
         private ListBox lstResults;
 
         public SearchForm()
@@ -28,6 +29,7 @@ namespace SuperMarket
             this.rdoProdus = new RadioButton();
             this.txtSearch = new TextBox();
             this.btnSearch = new Button();
+            this.btnDelete = new Button();
             this.lstResults = new ListBox();
 
             // GroupBox
@@ -75,6 +77,14 @@ namespace SuperMarket
             this.btnSearch.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
 
+            // btnDelete
+            this.btnDelete.Location = new System.Drawing.Point(360, 95);
+            this.btnDelete.Size = new System.Drawing.Size(100, 40);
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
+            this.btnDelete.BackColor = System.Drawing.Color.LightCoral;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+
             // lstResults
             this.lstResults.Location = new System.Drawing.Point(30, 150);
             this.lstResults.Size = new System.Drawing.Size(440, 200);
@@ -86,6 +96,7 @@ namespace SuperMarket
             this.Controls.Add(this.grpSearchType);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.lstResults);
             this.Text = "Search Data";
             this.BackColor = System.Drawing.Color.White;
@@ -160,10 +171,107 @@ namespace SuperMarket
                     });
                     break;
             }
+
             if (!resultsFound)
             {
                 lstResults.Items.Add("Not Found");
             }
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+{
+    if (lstResults.SelectedItem == null)
+    {
+        MessageBox.Show("Please select an item to delete.");
+        return;
+    }
+
+    string selection = GetSelectedType();
+    string selectedItem = lstResults.SelectedItem.ToString();
+
+    DialogResult result = MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+    if (result != DialogResult.Yes)
+        return;
+
+    bool itemDeleted = false;
+
+    switch (selection)
+    {
+        case "Manager":
+            for (int i = Program.manager.Count - 1; i >= 0; i--)
+            {
+                if (Program.manager[i].DisplayManagerInfo() == selectedItem)
+                {
+                    Program.manager.RemoveAt(i);
+                    itemDeleted = true;
+                    break;
+                }
+            }
+
+            if (itemDeleted)
+                System.IO.File.WriteAllLines("Manager.txt", Program.manager.ConvertAll(m => m.SaveToFile())); // Update file
+
+            break;
+
+        case "Casier":
+            for (int i = Program.casier.Count - 1; i >= 0; i--)
+            {
+                if (Program.casier[i].DisplayCasierInfo() == selectedItem)
+                {
+                    Program.casier.RemoveAt(i);
+                    itemDeleted = true;
+                    break;
+                }
+            }
+
+            if (itemDeleted)
+                System.IO.File.WriteAllLines("Casier.txt", Program.casier.ConvertAll(c => c.SaveToFile()));
+
+            break;
+
+        case "Raion":
+            for (int i = Program.raion.Count - 1; i >= 0; i--)
+            {
+                if (Program.raion[i].DisplayRaionInfo() == selectedItem)
+                {
+                    Program.raion.RemoveAt(i);
+                    itemDeleted = true;
+                    break;
+                }
+            }
+
+            if (itemDeleted)
+                System.IO.File.WriteAllLines("Raion.txt", Program.raion.ConvertAll(r => r.SaveToFile()));
+
+            break;
+
+        case "Produs":
+            for (int i = Program.produs.Count - 1; i >= 0; i--)
+            {
+                if (Program.produs[i].DisplayProdusInfo() == selectedItem)
+                {
+                    Program.produs.RemoveAt(i);
+                    itemDeleted = true;
+                    break;
+                }
+            }
+
+            if (itemDeleted)
+                System.IO.File.WriteAllLines("Produs.txt", Program.produs.ConvertAll(p => p.SaveToFile()));
+
+            break;
+    }
+
+    if (itemDeleted)
+    {
+        MessageBox.Show("Item deleted successfully.");
+        lstResults.Items.Remove(selectedItem);
+    }
+    else
+    {
+        MessageBox.Show("Item could not be deleted.");
+    }
+}
+
     }
 }

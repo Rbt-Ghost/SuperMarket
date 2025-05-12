@@ -138,5 +138,6 @@ namespace SuperMarket
         {
             return $"{base.ToString()},{Departament},{Salary}";
         }
+
     }
 }

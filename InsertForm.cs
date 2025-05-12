@@ -338,7 +338,7 @@ namespace SuperMarket
         {
             if (textBox.Name == "txtName")
             {
-                if (string.IsNullOrWhiteSpace(textBox.Text) || textBox.Text.Length < 3)
+                if (string.IsNullOrWhiteSpace(textBox.Text) || textBox.Text.Length < 3 || textBox.Text.Length == 0)
                 {
                     textBox.ForeColor = Color.Red;
                     return false;
@@ -362,7 +362,7 @@ namespace SuperMarket
             }
             else if (textBox.Name == "txtSalary" || textBox.Name == "txtPrice")
             {
-                if (!decimal.TryParse(textBox.Text, out decimal result) || result <= 0)
+                if (!decimal.TryParse(textBox.Text, out decimal result) || result <= 1999)
                 {
                     textBox.ForeColor = Color.Red;
                     return false;
@@ -376,19 +376,30 @@ namespace SuperMarket
             return comboBox.SelectedIndex != -1;
         }
 
-        private void InsertData(string type)
+        private void InsertData(string selectedType)
         {
-            foreach (Control control in pnlInputs.Controls)
-            {
-                if (control is TextBox tb)
+            string filePath = GetFilePath(selectedType);
+
+            List<string> dataToInsert = inputFields[selectedType]
+                .Where(c => c is TextBox tb && tb.ForeColor == Color.Black || c is ComboBox cb && cb.SelectedIndex != -1)
+                .Select(c =>
                 {
-                    tb.Text = string.Empty;
-                }
-                else if (control is ComboBox cb)
-                {
-                    cb.SelectedIndex = -1;
-                }
-            }
+                    if (c is TextBox textBox)
+                        return textBox.Text;
+                    if (c is ComboBox comboBox)
+                        return comboBox.SelectedItem?.ToString();
+                    return string.Empty;
+                }).ToList();
+
+            string data = string.Join(", ", dataToInsert);
+            File.AppendAllText(filePath, data + Environment.NewLine);
+
+            MessageBox.Show("Data inserted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private string GetFilePath(string type)
+        {
+            return Path.Combine(Directory.GetCurrentDirectory(), $"{type}.txt");
         }
     }
 }

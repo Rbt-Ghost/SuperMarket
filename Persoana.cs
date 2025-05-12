@@ -122,7 +122,7 @@ namespace SuperMarket
                     Console.WriteLine($"Eroare: {ex.Message}");
                 }
             }
-
+                
             while (true)
             {
                 try
@@ -141,6 +141,11 @@ namespace SuperMarket
         public override string ToString()
         {
             return $"{Name},{Age},{ID}";
+        }
+
+        public string SaveToFile()
+        {
+            return ToString();
         }
     }
 }

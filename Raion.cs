@@ -95,5 +95,10 @@ namespace SuperMarket
         {
             return $"{(int)Type},{Type}";
         }
+
+        public string SaveToFile()
+        {
+            return ToString(); // equivalent to $"{(int)Type},{Type}"
+        }
     }
 }

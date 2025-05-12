@@ -50,7 +50,7 @@ namespace SuperMarket
 
             // Common button style
             Font buttonFont = new Font("Segoe UI", 10F, FontStyle.Bold);
-            Color buttonColor = Color.FromArgb(52, 152, 219); // Blue
+            Color buttonColor = Color.FromArgb(52, 152, 219); 
             Size buttonSize = new Size(240, 45);
 
             // Title Label
