@@ -28,6 +28,8 @@ namespace SuperMarket
 
         private void InitializeComponent()
         {
+            this.Icon = new System.Drawing.Icon("Assets/InsertData.ico");
+
             this.pnlInputs = new Panel();
             this.btnInsert = new Button();
             this.btnClear = new Button();

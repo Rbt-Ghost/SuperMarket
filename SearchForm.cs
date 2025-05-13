@@ -22,6 +22,8 @@ namespace SuperMarket
 
         private void InitializeComponent()
         {
+            this.Icon = new System.Drawing.Icon("Assets/SearchData.ico");
+
             this.grpSearchType = new GroupBox();
             this.rdoManager = new RadioButton();
             this.rdoCasier = new RadioButton();

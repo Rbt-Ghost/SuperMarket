@@ -20,6 +20,8 @@ namespace SuperMarket
 
         private void InitializeComponent()
         {
+            this.Icon = new System.Drawing.Icon("Assets/DisplayData.ico");
+
             this.lstDisplayData = new ListBox();
             this.chkManager = new CheckBox();
             this.chkCasier = new CheckBox();
