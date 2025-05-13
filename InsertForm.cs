@@ -243,43 +243,49 @@ namespace SuperMarket
         {
             lblError.Text = string.Empty;
             bool allValid = true;
-
             string selectedType = GetSelectedType();
+
             if (string.IsNullOrEmpty(selectedType))
             {
                 lblError.Text = "Please select a category first!";
                 return;
             }
 
-            foreach (var control in pnlInputs.Controls)
+            foreach (Control control in pnlInputs.Controls)
             {
                 if (control is TextBox textBox)
                 {
+                    // Reset style first
+                    textBox.BackColor = Color.FromArgb(240, 240, 240);
+
                     var checkBox = pnlInputs.Controls[textBox.Name + "Check"] as CheckBox;
                     if (checkBox != null)
                     {
                         bool isValid = ValidateInput(textBox);
                         checkBox.Checked = isValid;
 
+                        // Set background to red if invalid
+                        textBox.BackColor = isValid ? Color.FromArgb(240, 240, 240) : Color.MistyRose;
+
                         if (!isValid)
-                        {
                             allValid = false;
-                        }
                     }
                 }
-
-                if (control is ComboBox comboBox)
+                else if (control is ComboBox comboBox)
                 {
+                    // Reset style first
+                    comboBox.BackColor = Color.FromArgb(240, 240, 240);
+
                     var checkBox = pnlInputs.Controls[comboBox.Name + "Check"] as CheckBox;
                     if (checkBox != null)
                     {
                         bool isValid = ValidateComboBox(comboBox);
                         checkBox.Checked = isValid;
 
+                        comboBox.BackColor = isValid ? Color.FromArgb(240, 240, 240) : Color.MistyRose;
+
                         if (!isValid)
-                        {
                             allValid = false;
-                        }
                     }
                 }
             }
@@ -293,6 +299,7 @@ namespace SuperMarket
             InsertData(selectedType);
             MessageBox.Show("Data Inserted Successfully!");
         }
+
 
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -336,40 +343,42 @@ namespace SuperMarket
 
         private bool ValidateInput(TextBox textBox)
         {
+            string value = textBox.Text.Trim();
+
             if (textBox.Name == "txtName")
             {
-                if (string.IsNullOrWhiteSpace(textBox.Text) || textBox.Text.Length < 3 || textBox.Text.Length == 0)
-                {
-                    textBox.ForeColor = Color.Red;
+                if (value.Length < 3 || value == "Enter name...")
                     return false;
-                }
             }
             else if (textBox.Name == "txtAge")
             {
-                if (!int.TryParse(textBox.Text, out int age) || age < 16 || age > 120)
-                {
-                    textBox.ForeColor = Color.Red;
+                if (!int.TryParse(value, out int age) || age < 16 || age > 120)
                     return false;
-                }
             }
             else if (textBox.Name == "txtID")
             {
-                if (!int.TryParse(textBox.Text, out int id) || id < 100000 || id > 999999)
-                {
-                    textBox.ForeColor = Color.Red;
+                if (!int.TryParse(value, out int id) || id < 100000 || id > 999999)
                     return false;
-                }
             }
             else if (textBox.Name == "txtSalary" || textBox.Name == "txtPrice")
             {
-                if (!decimal.TryParse(textBox.Text, out decimal result) || result <= 1999)
-                {
-                    textBox.ForeColor = Color.Red;
+                if (!decimal.TryParse(value, out decimal result) || result <= 1999)
                     return false;
-                }
             }
+            else if (textBox.Name == "txtNrCasa")
+            {
+                if (!int.TryParse(value, out int nr) || nr < 1)
+                    return false;
+            }
+            else if (textBox.Name == "txtQuantity")
+            {
+                if (!int.TryParse(value, out int qty) || qty < 1)
+                    return false;
+            }
+
             return true;
         }
+
 
         private bool ValidateComboBox(ComboBox comboBox)
         {
